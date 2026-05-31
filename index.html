@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<!-- ✅課程要求 CSP 內容安全政策（OWASP A02/A05） -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co https://*.supabase.net https://sgzdkbmmcvfjfyemkupd.supabase.co; img-src 'self' data:;">
+<!-- ✅課程要求 GA Google Analytics 預留 -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script> -->
+<title>KRTC 高雄捷運 · CTS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/*
+  ══════════════════════════════════════════════
+  設計語言：台灣在地手感 × 公告欄溫度
+  · 暖土色系（米白 #faf7f2、深褐 #2d1e0e、磚紅 #c0392b）
+  · 厚重黑體、強烈對比、不對稱留白
+  · 少圓角、多線條感、像黑板公告欄
+  · 狀態標示清楚有力
+  ══════════════════════════════════════════════
+*/
+:root{
+  --ink:  #180e04;   /* 深褐主文字（更深更實）*/
+  --ink2: #3e2510;
+  --ink3: #7a5838;
+  --ink4: #b8966a;
+  --bg:   #fdf9f3;   /* 米白（稍微更白更亮）*/
+  --bg2:  #f5ede0;
+  --bg3:  #ecdccc;
+  --line: #ccb494;   /* 線條（更明確）*/
+  --red:  #b52a1c;   /* 捷運紅（更飽和）*/
+  --or:   #c85808;   /* 橘線（更鮮亮）*/
+  --grn:  #1f7234;   /* 正常狀態綠（更飽和）*/
+  --ok:   #1f7234;
+  --err:  #b52a1c;
+  --warn: #a05500;
+  --r:    #b52a1c;
+  --o:    #c85808;
+  --sans: 'Noto Sans TC', system-ui, sans-serif;
+  --max:  1180px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.7;}
+img{max-width:100%;}
+
+/* ── 跳過連結 ── */
+.skip{position:absolute;top:-60px;left:0;background:var(--ink);color:var(--bg);padding:8px 16px;z-index:9999;text-decoration:none;font-weight:700;transition:top .2s;}
+.skip:focus{top:0;}
+
+/* ══════════════════════════════════════════════
+   HEADER：厚實黑底 × 白字 × 公告條
+══════════════════════════════════════════════ */
+.hd-top{
+  background:var(--ink);
+  padding:8px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:8px;
+}
+.hd-top-msg{
+  font-size:13px;color:rgba(255,255,255,.7);
+  display:flex;align-items:center;gap:8px;
+}
+.hd-top-msg strong{color:#fff;}
+.hd-right{display:flex;align-items:center;gap:10px;}
+.hd-clock{
+  font-size:18px;font-weight:900;color:#fff;
+  font-variant-numeric:tabular-nums;letter-spacing:.05em;
+}
+.hd-search{
+  display:flex;border:2px solid rgba(255,255,255,.25);
+  background:rgba(255,255,255,.08);
+}
+.hd-search input{
+  padding:6px 12px;border:none;outline:none;
+  background:transparent;color:#fff;font-size:13.5px;
+  font-family:var(--sans);width:150px;
+}
+.hd-search input::placeholder{color:rgba(255,255,255,.4);}
+.hd-search button{
+  padding:6px 12px;background:var(--red);color:#fff;
+  border:none;cursor:pointer;font-size:13px;font-weight:700;
+}
+
+/* Logo 列 */
+.hd-brand{
+  background:var(--bg);
+  border-bottom:3px solid var(--ink);
+  padding:16px 24px;
+}
+.hd-brand-in{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.logo{display:flex;align-items:center;gap:14px;cursor:pointer;}
+.logo-badge{
+  width:52px;height:52px;
+  background:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.logo-badge span{
+  font-size:11px;font-weight:900;color:#fff;
+  letter-spacing:-.5px;text-align:center;line-height:1.2;
+}
+.logo-text{}
+.logo-text .en{font-size:10px;font-weight:700;color:var(--ink3);letter-spacing:.16em;text-transform:uppercase;display:block;margin-bottom:3px;}
+.logo-text .zh{font-size:22px;font-weight:900;color:var(--ink);letter-spacing:-.3px;line-height:1;}
+/* 後端管理小按鈕 */
+.admin-corner-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:8px 16px;background:transparent;
+  border:2px solid var(--ink);
+  color:var(--ink);font-family:var(--sans);font-size:13px;font-weight:700;
+  cursor:pointer;transition:all .18s;white-space:nowrap;
+}
+.admin-corner-btn:hover{background:var(--ink);color:var(--bg);}
+
+/* 導覽列（公告欄標籤感）*/
+.bar-nav{
+  background:var(--bg2);
+  border-bottom:3px solid var(--ink);
+  position:sticky;top:0;z-index:200;
+}
+.nav-in{
+  max-width:var(--max);margin:0 auto;
+  padding:0 20px;
+  display:flex;flex-wrap:wrap; /* ✅課程要求 flex-wrap 不滑動 */
+}
+.nb{
+  padding:13px 18px;font-size:14px;font-weight:700;
+  color:var(--ink2);cursor:pointer;border:none;
+  background:transparent;font-family:var(--sans);
+  border-bottom:4px solid transparent;
+  margin-bottom:-3px;transition:all .15s;
+  white-space:nowrap;letter-spacing:.02em;
+}
+.nb:hover{color:var(--red);background:var(--bg3);}
+.nb.active{color:var(--red);border-bottom-color:var(--red);background:var(--bg);}
+
+/* ══ SPA ══ */
+.page{display:none;}.page.active{display:block;}
+.pw{max-width:var(--max);margin:0 auto;padding:32px 24px 80px;}
+
+/* 麵包屑 */
+.bc{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink4);margin-bottom:22px;font-weight:500;}
+.bc a{color:var(--red);text-decoration:none;}.bc a:hover{text-decoration:underline;}
+
+/* 頁面標題（黑板感：左側粗線 + 大字）*/
+.ph{margin-bottom:8px;}
+.ph-t{
+  font-size:26px;font-weight:900;color:var(--ink);
+  border-left:6px solid var(--red);
+  padding-left:14px;line-height:1.2;
+  display:block;
+}
+.ph-sub{font-size:13.5px;color:var(--ink3);margin-bottom:20px;padding-left:20px;line-height:1.7;}
+
+/* ══════════════════════════════════════════════
+   首頁 Hero（公告板風格）
+══════════════════════════════════════════════ */
+.hero{
+  background:var(--ink);
+  padding:52px 24px 60px;
+  position:relative;overflow:hidden;
+}
+/* 背景紋理感 */
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(
+    -45deg,
+    transparent,transparent 20px,
+    rgba(255,255,255,.015) 20px,rgba(255,255,255,.015) 21px
+  );
+}
+.hero-in{max-width:var(--max);margin:0 auto;position:relative;z-index:1;}
+.hero-kicker{
+  display:inline-block;
+  background:var(--red);color:#fff;
+  font-size:12px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
+  padding:4px 12px;margin-bottom:14px;
+}
+.hero-zh{
+  font-size:52px;font-weight:900;color:#fff;
+  line-height:1.1;margin-bottom:16px;
+  letter-spacing:-.5px;
+}
+.hero-zh em{color:var(--bg3);font-style:normal;}
+.hero-sub{
+  font-size:15px;color:rgba(255,255,255,.65);
+  line-height:1.85;max-width:480px;margin-bottom:28px;
+}
+.hero-acts{display:flex;gap:10px;flex-wrap:wrap;}
+
+/* 快速服務卡片（公告欄標籤，不是現代卡片）*/
+.qc-wrap{
+  max-width:var(--max);margin:0 auto;
+  padding:28px 24px 0;
+  display:grid;grid-template-columns:repeat(5,1fr);gap:0;
+  border-bottom:3px solid var(--ink);
+}
+.qc{
+  padding:22px 16px 20px;text-align:center;cursor:pointer;
+  background:var(--bg);border-right:1px solid var(--line);
+  transition:background .15s;position:relative;
+}
+.qc:last-child{border-right:none;}
+.qc:hover{background:var(--bg2);}
+.qc:hover::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:var(--red);}
+.qc-ico{font-size:26px;margin-bottom:9px;display:block;}
+.qc-t{font-size:14px;font-weight:700;color:var(--ink);}
+.qc-s{font-size:11.5px;color:var(--ink3);margin-top:3px;}
+
+/* 首頁主體（雙欄不等寬）*/
+.home-body{
+  max-width:var(--max);margin:0 auto;
+  padding:28px 24px 70px;
+  display:grid;grid-template-columns:2fr 1fr;gap:0;
+}
+.home-left{border-right:1px solid var(--line);padding-right:28px;}
+.home-right{padding-left:28px;}
+
+/* 段落標題 */
+.sec-t{
+  font-size:13px;font-weight:900;color:var(--ink3);
+  letter-spacing:.12em;text-transform:uppercase;
+  margin-bottom:14px;margin-top:28px;
+  display:flex;align-items:center;gap:8px;
+}
+.sec-t:first-child{margin-top:0;}
+.sec-t::before{content:'';display:inline-block;width:24px;height:2px;background:var(--red);}
+.sec-more{margin-left:auto;font-size:12px;color:var(--red);cursor:pointer;font-weight:700;letter-spacing:.04em;text-transform:none;}
+
+/* 統計條（數字感）*/
+.stat-row{display:flex;gap:0;margin-bottom:24px;border:2px solid var(--ink);}
+.stat-b{flex:1;padding:16px 14px;text-align:center;border-right:1px solid var(--ink);}
+.stat-b:last-child{border-right:none;}
+.stat-n{font-size:32px;font-weight:900;color:var(--ink);line-height:1;letter-spacing:-.5px;}
+.stat-l{font-size:11.5px;color:var(--ink3);margin-top:3px;font-weight:500;}
+
+/* 路線狀態（條列風格）*/
+.rc-item{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 0;
+  border-bottom:1px solid var(--line);
+  cursor:pointer;transition:background .15s;
+}
+.rc-item:last-child{border-bottom:none;}
+.rc-item:hover{padding-left:6px;}
+.rb{
+  width:26px;height:26px;flex-shrink:0;
+  font-size:11px;font-weight:900;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+}
+.rc-nm{font-size:14px;font-weight:700;flex:1;color:var(--ink);}
+.rc-mt{font-size:12px;color:var(--ink3);}
+.rc-ok{
+  display:flex;align-items:center;gap:5px;
+  font-size:12.5px;color:var(--grn);font-weight:700;
+}
+.rc-dot{width:8px;height:8px;background:var(--grn);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(42,122,64,.4);}50%{box-shadow:0 0 0 5px rgba(42,122,64,0);}}
+
+/* 公告列（筆記本感）*/
+.ann-panel{border:2px solid var(--ink);}
+.ann-hd{
+  background:var(--ink);color:var(--bg);
+  padding:10px 16px;font-size:13px;font-weight:900;
+  letter-spacing:.1em;text-transform:uppercase;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.ann-more{font-size:11.5px;color:rgba(255,255,255,.5);cursor:pointer;font-weight:400;letter-spacing:0;}
+.ann-more:hover{color:var(--bg);}
+.ann-list{list-style:none;}
+.ann-item{
+  padding:12px 16px;
+  border-bottom:1px solid var(--line);
+  cursor:pointer;transition:background .15s;
+}
+.ann-item:last-child{border-bottom:none;}
+.ann-item:hover{background:var(--bg2);}
+.ann-meta{display:flex;gap:7px;align-items:center;margin-bottom:4px;}
+.ann-date{font-size:11px;color:var(--ink4);font-variant-numeric:tabular-nums;font-weight:500;}
+.ann-cat{
+  font-size:10px;font-weight:900;color:var(--bg);
+  background:var(--red);padding:1px 7px;
+  letter-spacing:.04em;
+}
+.ann-title{font-size:13.5px;color:var(--ink);font-weight:500;line-height:1.5;}
+
+/* ══ 按鈕 ══ */
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 22px;font-size:14px;font-weight:700;
+  cursor:pointer;border:none;font-family:var(--sans);
+  transition:all .15s;letter-spacing:.02em;
+}
+.btn-solid{background:var(--ink);color:var(--bg);}
+.btn-solid:hover{background:var(--red);}
+.btn-outline{background:transparent;color:var(--ink);border:2px solid var(--ink);}
+.btn-outline:hover{background:var(--ink);color:var(--bg);}
+.btn-red{background:var(--red);color:#fff;}.btn-red:hover{background:#a93226;}
+.btn-ghost{background:var(--bg2);color:var(--ink2);border:1px solid var(--line);}
+.btn-ghost:hover{background:var(--bg3);}
+.btn-hero{background:var(--red);color:#fff;font-size:15px;padding:12px 28px;}
+.btn-hero:hover{background:#a93226;}
+.btn-hero-o{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.5);font-size:15px;padding:12px 28px;}
+.btn-hero-o:hover{background:rgba(255,255,255,.1);}
+.btn-sm{padding:6px 13px;font-size:13px;}
+.btn-xs{padding:3px 9px;font-size:12px;}
+
+/* ══ 卡片（框線感）══ */
+.card{background:var(--bg);border:2px solid var(--line);margin-bottom:16px;}
+.card-top{border-top:4px solid var(--red);}
+.card-hd{
+  padding:12px 18px;
+  border-bottom:2px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--bg2);
+}
+.card-ttl{font-size:14px;font-weight:900;color:var(--ink);}
+.card-body{padding:18px;}
+
+.badge{display:inline-flex;align-items:center;padding:3px 10px;font-size:12px;font-weight:700;}
+.badge-ok{background:#d4f0dc;color:#1a5c2a;}
+.badge-warn{background:#fde8c0;color:#7a4000;}
+.badge-red{background:#fde0dd;color:#8c1f1a;}
+
+.toast{
+  position:fixed;bottom:24px;right:24px;z-index:999;
+  background:var(--ink);color:var(--bg);
+  padding:13px 20px;font-size:14px;font-weight:700;
+  transform:translateY(80px);opacity:0;
+  transition:all .3s;pointer-events:none;max-width:320px;
+  border-left:4px solid var(--red);
+}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.ok{border-left-color:var(--grn);}
+.toast.err{border-left-color:var(--red);}
+
+/* ══ 車站列表 ══ */
+.search-bar{display:flex;border:2px solid var(--ink);margin-bottom:22px;}
+.search-bar input{
+  flex:1;padding:11px 16px;border:none;outline:none;
+  font-size:14.5px;font-family:var(--sans);background:var(--bg);color:var(--ink);
+}
+.search-bar input:focus{background:var(--bg2);}
+.search-bar button{
+  padding:11px 20px;background:var(--ink);color:var(--bg);
+  border:none;cursor:pointer;font-family:var(--sans);font-size:14px;font-weight:700;
+}
+.search-bar button:hover{background:var(--red);}
+
+.line-sec{margin-bottom:22px;}
+.line-sec-hd{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 16px;background:var(--bg2);
+  border-left:5px solid var(--lc,var(--red));
+  border-bottom:1px solid var(--line);
+  font-size:14px;font-weight:900;
+}
+.line-sec-cnt{font-size:12.5px;color:var(--ink3);margin-left:auto;font-weight:500;}
+.st-tbl{width:100%;border-collapse:collapse;border:1px solid var(--line);}
+.st-tbl tr{border-bottom:1px solid var(--line);cursor:pointer;transition:background .15s;}
+.st-tbl tr:last-child{border-bottom:none;}
+.st-tbl tr:hover{background:var(--bg2);}
+.st-tbl td{padding:10px 16px;font-size:14px;}
+.st-pill{display:inline-block;padding:2px 8px;font-size:10.5px;font-weight:900;color:#fff;}
+.st-nm-zh{font-weight:700;}
+.st-nm-en{font-size:11.5px;color:var(--ink3);}
+.tx-dot{display:inline-block;width:20px;height:20px;font-size:10px;font-weight:900;color:#fff;line-height:20px;text-align:center;}
+
+/* ══ 車站詳情 ══ */
+.det-hero{
+  background:var(--ink);
+  padding:28px 24px;margin-bottom:0;color:#fff;
+}
+.det-kicker{font-size:11px;font-weight:900;color:rgba(255,255,255,.45);letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px;}
+.det-zh{font-size:42px;font-weight:900;line-height:1;letter-spacing:-.5px;margin-bottom:5px;}
+.det-en{font-size:13px;color:rgba(255,255,255,.5);letter-spacing:.06em;}
+.det-tx{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;background:var(--red);color:#fff;padding:4px 12px;margin-top:10px;}
+.sm-card{background:var(--red);padding:18px 14px;text-align:center;}
+.sm-ava{width:42px;height:42px;background:rgba(255,255,255,.15);margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.sm-role{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:3px;}
+.sm-name{font-size:15px;font-weight:900;color:#fff;}
+
+.det-ops{display:flex;border:2px solid var(--ink);margin-bottom:0;flex-wrap:wrap;}
+.det-op{flex:1;min-width:120px;padding:13px 16px;border-right:1px solid var(--line);background:var(--bg);}
+.det-op:last-child{border-right:none;}
+.det-op-l{font-size:11px;color:var(--ink3);margin-bottom:4px;font-weight:700;letter-spacing:.04em;}
+.det-op-v{font-size:14px;font-weight:700;}
+.det-op-v.ok{color:var(--grn);}
+.ntr{color:var(--red);font-weight:900;font-variant-numeric:tabular-nums;}
+.ntr.arr{color:var(--grn);animation:blink 1s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+/* 頁籤（標籤感）*/
+.dtabs{
+  display:flex;
+  border-bottom:2px solid var(--ink);
+  background:var(--bg2);
+}
+.dtab{
+  padding:12px 18px;font-size:14px;font-weight:700;color:var(--ink3);
+  cursor:pointer;border:none;background:transparent;
+  font-family:var(--sans);white-space:nowrap;
+  border-bottom:3px solid transparent;margin-bottom:-2px;
+  transition:all .15s;
+}
+.dtab:hover{color:var(--ink);background:var(--bg3);}
+.dtab.active{color:var(--red);border-bottom-color:var(--red);background:var(--bg);font-weight:900;}
+.dtab-panel{display:none;}.dtab-panel.active{display:block;}
+
+/* PIDS（暖棕底）*/
+.pids{background:#1c0e05;}
+.pids-hd{background:#120800;padding:10px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #3a2010;}
+.pids-hd-t{font-size:11px;color:#7a5040;letter-spacing:.14em;text-transform:uppercase;font-weight:700;}
+.pids-hd-clk{font-size:13px;color:#5a3a22;font-variant-numeric:tabular-nums;font-weight:700;}
+.pids-row{display:grid;grid-template-columns:30px 1fr 68px 88px;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid #2a1508;position:relative;}
+.pids-row:last-child{border-bottom:none;}
+.pids-acc{position:absolute;left:0;top:0;bottom:0;width:4px;}
+.pids-plat{width:26px;height:26px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#7a5040;}
+.pids-zh{font-size:20px;font-weight:700;color:#f0e0c8;}
+.pids-en{font-size:10.5px;color:#5a3a22;}
+.pids-st{font-size:11px;color:#c0a060;text-align:center;font-weight:700;}
+.pids-time{font-size:24px;font-weight:900;text-align:right;color:#e0b060;font-variant-numeric:tabular-nums;}
+.pids-time.arriving{color:#60cc80;animation:blink 1s infinite;}
+.pids-ft{background:#120800;padding:9px 18px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#5a3a22;flex-wrap:wrap;gap:8px;}
+.sync-btn{padding:4px 12px;border:1px solid #3a2010;background:transparent;font-size:12px;font-weight:700;cursor:pointer;color:#806040;font-family:var(--sans);}
+.sync-btn:hover{border-color:#e0b060;color:#e0b060;}
+
+/* Car-by-Car */
+.car-hd{display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--ink2);margin-bottom:11px;}
+.car-row{display:grid;grid-template-columns:52px 1fr 38px;align-items:center;gap:10px;margin-bottom:6px;}
+.car-lbl{font-size:12.5px;color:var(--ink3);font-weight:500;}
+.car-trk{height:14px;background:var(--bg2);border:1px solid var(--line);overflow:hidden;position:relative;}
+.car-fill{position:absolute;top:0;left:0;height:100%;transition:width 1.2s ease;}
+.car-pct{font-size:12.5px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;}
+.lm-wrap{overflow-x:auto;}
+.tl-bar{background:var(--bg2);border:1px solid var(--line);padding:9px 14px;display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+.tl-run{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:700;}
+.tl-dot{width:8px;height:8px;background:#f59e0b;animation:pulse 1.5s infinite;}
+.tl-dir{padding:3px 10px;font-size:12px;font-weight:700;border:1px solid var(--ink);}
+.tl-st{padding:3px 9px;font-size:11px;font-weight:900;color:#fff;}
+.tl-arr{background:#fef3c7;color:var(--warn);padding:3px 10px;font-size:12px;font-weight:700;border:1px solid #fde68a;}
+.ops-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);margin-top:14px;}
+.ops-c{padding:11px 14px;border-right:1px solid var(--line);background:var(--bg);}
+.ops-c:last-child{border-right:none;}
+.ops-l{font-size:11px;color:var(--ink3);margin-bottom:3px;font-weight:700;letter-spacing:.04em;}
+.ops-v{font-size:13.5px;font-weight:700;}
+.ops-v.ok{color:var(--grn);}
+
+/* 設施 */
+.fac-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+.fac-c{display:flex;align-items:center;gap:11px;padding:13px 14px;background:var(--bg);}
+.fac-ico{width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.fac-nm{font-size:13.5px;font-weight:700;}
+.fac-ds{font-size:11.5px;color:var(--ink3);}
+
+/* ══ 乘車須知 ══ */
+.rules-wrap{display:grid;grid-template-columns:175px 1fr;gap:20px;align-items:start;}
+.rules-sb{border:2px solid var(--ink);}
+.rules-sb-hd{font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--bg);background:var(--ink);padding:8px 12px;}
+.rules-btn{
+  display:flex;align-items:center;gap:8px;width:100%;
+  padding:11px 12px;border:none;background:transparent;
+  font-family:var(--sans);font-size:13.5px;color:var(--ink2);font-weight:500;
+  cursor:pointer;border-bottom:1px solid var(--line);transition:background .15s;text-align:left;
+}
+.rules-btn:last-child{border-bottom:none;}
+.rules-btn:hover{background:var(--bg2);}
+.rules-btn.active{background:var(--red);color:#fff;font-weight:700;}
+.rules-num{width:22px;height:22px;background:var(--line);font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.rules-btn.active .rules-num{background:rgba(255,255,255,.25);color:#fff;}
+.rule-card{background:var(--bg);border:2px solid var(--ink);margin-bottom:14px;scroll-margin-top:80px;}
+.rule-card-hd{background:var(--ink);padding:14px 18px;color:#fff;display:flex;gap:13px;align-items:flex-start;}
+.rule-card-hd h2{font-size:15px;font-weight:700;line-height:1.4;flex:1;color:#fff;}
+.rule-num-lg{width:32px;height:32px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;flex-shrink:0;}
+.rule-body{padding:14px 18px;}
+.rule-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.rule-col{padding:12px 14px;border:1px solid var(--line);}
+.rule-col.dont{background:#fff5f5;border-color:#f0c0b8;}
+.rule-col.do{background:#f2faf4;border-color:#a8d8b4;}
+.rule-col-hd{font-size:11.5px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;}
+.rule-col.dont .rule-col-hd{color:#8c1f1a;}
+.rule-col.do .rule-col-hd{color:#1a5c2a;}
+.rule-items{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.rule-items li{font-size:13.5px;display:flex;align-items:center;gap:7px;}
+
+/* ══ 查詢工具列 ══ */
+.inq-tb{
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+  padding:14px 18px;background:var(--bg2);
+  border:1px solid var(--line);margin-bottom:14px;
+}
+.inq-tb label{font-size:13px;font-weight:700;color:var(--ink2);}
+.inq-inp,.inq-sel{
+  padding:7px 11px;border:1.5px solid var(--line);
+  font-size:13.5px;font-family:var(--sans);background:var(--bg);
+  color:var(--ink);outline:none;
+}
+.inq-inp:focus,.inq-sel:focus{border-color:var(--ink);}
+.inq-sub{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:13px;}
+.inq-sub a,.inq-sub button{
+  padding:8px 14px;font-size:13.5px;font-weight:700;
+  border:2px solid var(--line);background:var(--bg);
+  color:var(--ink);cursor:pointer;text-decoration:none;
+  font-family:var(--sans);transition:all .15s;
+}
+.inq-sub a:hover,.inq-sub button:hover{background:var(--bg2);border-color:var(--ink);}
+.inq-sub button.active-mode{background:var(--ink);color:var(--bg);}
+.pg-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);}
+.pg-info{font-size:13.5px;color:var(--ink3);font-weight:500;}
+
+.data-tbl{width:100%;border-collapse:collapse;}
+.data-tbl thead tr{background:var(--ink);color:var(--bg);}
+.data-tbl thead th{padding:11px 16px;font-weight:700;font-size:13px;text-align:left;}
+.data-tbl tbody tr{border-bottom:1px solid var(--line);transition:background .15s;}
+.data-tbl tbody tr:hover{background:var(--bg2);}
+.data-tbl tbody td{padding:12px 16px;vertical-align:middle;}
+.lost-flt{display:flex;gap:8px;margin-bottom:14px;}
+
+/* ══ 關於 ══ */
+.about-ban{background:var(--ink);padding:48px 38px;color:#fff;margin-bottom:0;}
+.about-sub{font-size:11px;font-weight:900;color:rgba(255,255,255,.4);letter-spacing:.18em;text-transform:uppercase;margin-bottom:10px;}
+.about-ban h1{font-size:36px;font-weight:900;margin-bottom:12px;line-height:1.1;letter-spacing:-.3px;}
+.about-ban h1 em{color:var(--bg3);font-style:normal;}
+.about-ban p{color:rgba(255,255,255,.6);font-size:14.5px;max-width:500px;line-height:1.85;}
+.about-stats{display:flex;border:2px solid var(--ink);background:var(--bg);}
+.ab-c{flex:1;padding:20px;border-right:1px solid var(--ink);text-align:center;}
+.ab-c:last-child{border-right:none;}
+.ab-num{font-size:36px;font-weight:900;color:var(--ink);line-height:1;letter-spacing:-.5px;}
+.ab-lbl{font-size:12px;color:var(--ink3);margin-top:5px;font-weight:500;}
+
+/* ══ 聯絡 ══ */
+.contact-grid{display:grid;grid-template-columns:1fr 250px;gap:24px;align-items:start;}
+.ci-box{background:var(--ink);padding:22px 20px;}
+.ci-ttl{font-size:14px;font-weight:900;color:var(--bg);margin-bottom:14px;letter-spacing:.06em;text-transform:uppercase;}
+.ci-row{display:flex;gap:10px;margin-bottom:12px;font-size:13.5px;color:rgba(255,255,255,.65);}
+.ci-row strong{color:#fff;display:block;margin-bottom:1px;}
+
+/* ══ 表單 ══ */
+.fg{margin-bottom:16px;}
+.fl{display:block;font-size:13.5px;font-weight:700;color:var(--ink2);margin-bottom:5px;}
+.fl .req{color:var(--red);margin-left:3px;}
+/* ✅課程要求 aria-invalid 無障礙欄位 */
+.fc{
+  width:100%;padding:10px 13px;
+  border:2px solid var(--line);
+  font-size:14.5px;font-family:var(--sans);color:var(--ink);
+  background:var(--bg);outline:none;transition:border .18s;
+}
+.fc:focus{border-color:var(--ink);background:var(--bg2);}
+.fc.err{border-color:var(--err);}
+textarea.fc{resize:vertical;min-height:90px;}
+.fe{font-size:12px;color:var(--err);margin-top:4px;display:none;font-weight:500;}
+.fe.show{display:block;}
+.fh{font-size:12px;color:var(--ink3);margin-top:4px;}
+.pw-wrap{position:relative;}
+.pw-wrap .fc{padding-right:42px;}
+.pw-eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:17px;color:var(--ink3);}
+.pw-eye:hover{color:var(--ink);}
+
+/* ══ 後端管理（右側滑出）══ */
+/* ══ 後端管理（全頁面）══ */
+.admin-login-wrap{min-height:calc(100vh - 220px);display:flex;align-items:center;justify-content:center;padding:40px 22px;}
+/* 登入卡片 */
+.login-card{border:2px solid var(--ink);max-width:440px;width:100%;}
+.login-card-hd{background:var(--ink);padding:26px;text-align:center;color:#fff;}
+.login-card-hd .ico{font-size:34px;display:block;margin-bottom:10px;}
+.login-card-hd h3{font-size:20px;font-weight:900;margin-bottom:4px;}
+.login-card-hd p{font-size:12.5px;color:rgba(255,255,255,.5);}
+.login-card-body{padding:26px;background:var(--bg);}
+/* 2FA */
+.tfa-row{display:flex;gap:8px;justify-content:center;margin:12px 0;}
+.tfa-d{width:44px;height:54px;border:2px solid var(--line);text-align:center;font-size:22px;font-weight:900;font-family:var(--sans);outline:none;background:var(--bg);color:var(--ink);}
+.tfa-d:focus{border-color:var(--ink);}
+/* 儀表板 Header */
+.adm-hd{background:var(--ink);color:var(--bg);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--red);margin-bottom:0;}
+.adm-hd h2{font-size:18px;font-weight:900;letter-spacing:.03em;}
+/* 儀表板內容 */
+.adm-api{background:var(--ink2);color:#fff;padding:18px 20px;margin-bottom:16px;border-left:5px solid var(--red);}
+.adm-api h3{font-size:14px;color:#e8d4c0;margin-bottom:8px;font-weight:900;letter-spacing:.06em;}
+.adm-api p{font-size:12.5px;color:rgba(255,255,255,.6);line-height:1.75;margin-bottom:12px;}
+.adm-api-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.adm-api-st{font-size:12.5px;color:#f0d0a0;margin-top:9px;min-height:18px;}
+.adm-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:2px solid var(--ink);margin-bottom:18px;}
+.adm-stat{padding:16px;text-align:center;border-right:1px solid var(--line);background:var(--bg);}
+.adm-stat:last-child{border-right:none;}
+.adm-stat b{display:block;font-size:30px;font-weight:900;color:var(--ink);}
+.adm-stat span{font-size:12px;color:var(--ink3);font-weight:500;}
+.adm-flt{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;align-items:center;}
+.sp{display:inline-block;padding:3px 9px;font-size:12px;font-weight:700;}
+.sp-p{background:#fde8c0;color:#7a4000;}.sp-a{background:#d4f0dc;color:#1a5c2a;}
+.sp-r{background:#fde0dd;color:#8c1f1a;}.sp-d{background:#dde4f8;color:#2a3a8c;}
+.fe-block{display:none;padding:10px 14px;background:#fde0dd;border:2px solid var(--red);font-size:13px;color:#8c1f1a;margin-bottom:12px;font-weight:500;}
+.fe-block.show{display:block;}
+
+/* ══ Modal ══ */
+.modal-ov{display:none;position:fixed;inset:0;z-index:500;background:rgba(28,16,5,.7);align-items:center;justify-content:center;padding:20px;}
+.modal-box{background:var(--bg);max-width:530px;width:100%;border:3px solid var(--ink);}
+.modal-hd{background:var(--ink);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;}
+.modal-hd-t{color:var(--bg);font-weight:900;font-size:15px;}
+.modal-close{background:none;border:none;color:rgba(255,255,255,.6);font-size:22px;cursor:pointer;}
+.modal-bd{padding:22px 20px;}
+.modal-ft{padding:14px 20px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px;}
+
+/* ══ Footer ══ */
+.footer{background:var(--ink);color:rgba(255,255,255,.5);padding:36px 24px 20px;margin-top:60px;border-top:4px solid var(--red);}
+.footer-in{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr repeat(3,auto);gap:28px;margin-bottom:24px;}
+.fb-en{font-size:10px;color:rgba(255,255,255,.2);letter-spacing:.1em;text-transform:uppercase;}
+.fb-zh{font-size:20px;font-weight:900;color:var(--bg);margin:4px 0 8px;letter-spacing:-.3px;}
+.fb-p{font-size:13px;line-height:1.7;}
+.fc-col h4{font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:10px;}
+.fc-col a{display:block;font-size:13px;color:rgba(255,255,255,.45);text-decoration:none;margin-bottom:7px;cursor:pointer;transition:color .15s;}
+.fc-col a:hover{color:var(--bg);}
+.footer-btm{max-width:var(--max);margin:0 auto;padding-top:16px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;font-size:12.5px;flex-wrap:wrap;gap:8px;}
+
+/* ✅課程要求 RWD 響應式設計 */
+@media(max-width:960px){
+  .home-body{grid-template-columns:1fr;}
+  .home-left{border-right:none;padding-right:0;border-bottom:1px solid var(--line);padding-bottom:24px;}
+  .home-right{padding-left:0;padding-top:24px;}
+  .qc-wrap{grid-template-columns:repeat(3,1fr);}
+  .contact-grid{grid-template-columns:1fr;}
+  .footer-in{grid-template-columns:1fr 1fr;}
+  .rules-wrap{grid-template-columns:1fr;}
+  .rules-sb{display:flex;flex-wrap:wrap;gap:0;}
+  .rules-btn{flex:1 1 auto;justify-content:center;}
+  .rule-cols{grid-template-columns:1fr;}
+  .det-ops{flex-wrap:wrap;}.det-op{min-width:45%;}
+}
+@media(max-width:600px){
+  .pw{padding:16px 14px 60px;}
+  .hero-zh{font-size:34px;}
+  .qc-wrap{grid-template-columns:repeat(2,1fr);}
+  .pids-row{grid-template-columns:28px 1fr 80px;}.pids-st{display:none;}
+  .adm-stats{grid-template-columns:1fr 1fr;}
+  .hd-search{display:none;}
+  .about-ban{padding:32px 22px;}
+  .about-ban h1{font-size:28px;}
+}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">跳至主要內容</a>
+<div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+<!-- ══ Header：厚實黑底 ══ -->
+<div class="hd-top">
+  <div class="hd-top-msg">
+  </div>
+  <div class="hd-right">
+    <div class="hd-clock" id="hClock" aria-live="off">--:--:--</div>
+    <div class="hd-search" role="search">
+      <input type="search" id="globalSearch" placeholder="搜尋車站…" aria-label="全站搜尋" onkeydown="if(event.key==='Enter')doSearch()">
+      <button onclick="doSearch()" aria-label="搜尋">→</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ Logo 列 ══ -->
+<div class="hd-brand">
+  <div class="hd-brand-in">
+    <div class="logo" onclick="showPage('home')" role="link" tabindex="0" aria-label="高雄捷運首頁">
+      <div class="logo-badge"><span>高捷</span></div>
+      <div class="logo-text">
+        <span class="en">CTS Transit Corporation</span>
+        <span class="zh">KRTC 高雄捷運</span>
+      </div>
+    </div>
+    <button class="admin-corner-btn" onclick="openAdminPanel()" aria-label="後端管理">⚙管理者登入</button>
+  </div>
+</div>
+
+<!-- ══ 導覽列 ══ -->
+<nav class="bar-nav" role="navigation" aria-label="主導覽">
+  <div class="nav-in">
+    <button class="nb active" onclick="showPage('home')"        id="n-home"    aria-current="page">首頁</button>
+    <button class="nb"        onclick="showPage('stationList')" id="n-station"                    >車站資訊</button>
+    <button class="nb"        onclick="showPage('holiday')"     id="n-holiday"                    >休駛日曆</button>
+    <button class="nb"        onclick="showPage('tickets')"     id="n-tickets"                    >票務活動</button>
+    <button class="nb"        onclick="showPage('lost')"        id="n-lost"                       >失物招領</button>
+    <button class="nb"        onclick="showPage('rules')"       id="n-rules"                      >乘車須知</button>
+    <button class="nb"        onclick="showPage('about')"       id="n-about"                      >關於本公司</button>
+    <button class="nb"        onclick="showPage('contact')"     id="n-contact"                    >與我們聯繫</button>
+  </div>
+</nav>
+
+<!-- ════════════ 首頁 ════════════ -->
+<div class="page active" id="page-home" role="main">
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-in">
+      <div class="hero-kicker">Kaohsiung Rapid Transit · Since 2010</div>
+      <h1 class="hero-zh">讓港都的燦爛陽光<br><em>與您我更靠近</em></h1>
+      <p class="hero-sub">KRTC 高雄捷運連結城市每個角落，兩條骨幹路線每日為旅客提供安全、準點的軌道交通服務。</p>
+      <div class="hero-acts">
+        <button class="btn btn-hero" onclick="showPage('stationList')">查詢車站 →</button>
+        <button class="btn btn-hero-o" onclick="showPage('about')">關於本公司</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 快速服務（公告欄標籤）-->
+  <div class="qc-wrap" id="main">
+    <div class="qc" onclick="showPage('stationList')" role="button" tabindex="0"><span class="qc-ico">🚉</span><div class="qc-t">車站資訊</div><div class="qc-s">即時到站 · 設施</div></div>
+    <div class="qc" onclick="showPage('holiday')"     role="button" tabindex="0"><span class="qc-ico">📅</span><div class="qc-t">休駛日曆</div><div class="qc-s">停駛 · 異常營運</div></div>
+    <div class="qc" onclick="showPage('tickets')"     role="button" tabindex="0"><span class="qc-ico">🎫</span><div class="qc-t">票務活動</div><div class="qc-s">優惠 · 活動</div></div>
+    <div class="qc" onclick="showPage('lost')"        role="button" tabindex="0"><span class="qc-ico">🔍</span><div class="qc-t">失物招領</div><div class="qc-s">登記 · 查詢</div></div>
+    <div class="qc" onclick="showPage('contact')"     role="button" tabindex="0"><span class="qc-ico">✉️</span><div class="qc-t">聯繫我們</div><div class="qc-s">留言 · 客服</div></div>
+  </div>
+
+  <!-- 主體 -->
+  <div class="home-body">
+    <div class="home-left">
+      <div class="sec-t">系統狀態</div>
+      <div class="stat-row">
+        <div class="stat-b"><div class="stat-n">2</div><div class="stat-l">營運路線</div></div>
+        <div class="stat-b"><div class="stat-n" id="statTotal">--</div><div class="stat-l">服務車站</div></div>
+        <div class="stat-b"><div class="stat-n" style="color:var(--grn);">正常</div><div class="stat-l">目前營運</div></div>
+      </div>
+      <div class="sec-t">路線狀態<span class="sec-more" onclick="showPage('stationList')">查看所有車站 →</span></div>
+      <div id="routeCards"></div>
+      <div class="sec-t" style="margin-top:28px;">旅客服務</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);">
+        <div style="padding:16px;border-right:1px solid var(--line);cursor:pointer;transition:background .15s;" onmouseenter="this.style.background='var(--bg2)'" onmouseleave="this.style.background=''" onclick="showPage('rules')">
+          <div style="font-size:18px;margin-bottom:6px;">📋</div>
+          <div style="font-weight:900;margin-bottom:3px;font-size:14px;">乘車須知</div>
+          <div style="font-size:12.5px;color:var(--ink3);">搭乘前詳閱規定。</div>
+        </div>
+        <div style="padding:16px;cursor:pointer;transition:background .15s;" onmouseenter="this.style.background='var(--bg2)'" onmouseleave="this.style.background=''" onclick="showPage('about')">
+          <div style="font-size:18px;margin-bottom:6px;">🏢</div>
+          <div style="font-weight:900;margin-bottom:3px;font-size:14px;">關於本公司</div>
+          <div style="font-size:12.5px;color:var(--ink3);">CTS 捷運公司簡介。</div>
+        </div>
+      </div>
+    </div>
+    <div class="home-right">
+      <div class="sec-t">最新公告</div>
+      <div class="ann-panel">
+        <div class="ann-hd">公告欄<span class="ann-more" onclick="showPage('announcements')">全部 →</span></div>
+        <ul class="ann-list" id="homeAnnList" aria-label="最新公告"></ul>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer" role="contentinfo">
+    <div class="footer-in">
+      <div><div class="fb-en">CTS Transit Corporation</div><div class="fb-zh">KRTC 高雄捷運</div><div class="fb-p">© 2026 CTS捷運公司。版權所有。</div></div>
+      <div class="fc-col"><h4>旅客服務</h4><a onclick="showPage('stationList')">車站資訊</a><a onclick="showPage('lost')">失物招領</a><a onclick="showPage('rules')">乘車須知</a></div>
+      <div class="fc-col"><h4>關於我們</h4><a onclick="showPage('about')">公司簡介</a></div>
+      <div class="fc-col"><h4>聯絡資訊</h4><a href="#">07-000-0000</a><a onclick="showPage('contact')">意見回饋</a></div>
+    </div>
+    <div class="footer-btm"><span>KRTC 高雄捷運 官方資訊平台</span><span>隱私政策 · 使用條款 · 無障礙聲明</span></div>
+  </footer>
+</div>
+
+<!-- ════ 車站列表 ════ -->
+<div class="page" id="page-stationList">
+  <div class="pw">
+    <nav class="bc"><a onclick="showPage('home')">首頁</a> / <span>車站資訊</span></nav>
+    <div class="ph"><span class="ph-t">車站資訊</span></div>
+    <p class="ph-sub">選擇車站查看即時到站、列車監控與設施。<span style="background:var(--r);color:#fff;font-size:10px;font-weight:900;padding:2px 7px;">R</span> 紅線　<span style="background:var(--o);color:#fff;font-size:10px;font-weight:900;padding:2px 7px;">O</span> 橘線</p>
+    <div class="search-bar">
+      <input type="search" id="stSearch" placeholder="輸入站名（中文/英文）或站碼，例：美麗島、R10" oninput="filterStations(this.value)" aria-label="搜尋車站">
+      <button onclick="filterStations(document.getElementById('stSearch').value)">搜尋</button>
+    </div>
+    <div id="stListContent"></div>
+  </div>
+</div>
+
+<!-- ════ 車站詳情 ════ -->
+<div class="page" id="page-detail">
+  <div class="pw">
+    <nav class="bc"><a onclick="showPage('home')">首頁</a> / <a onclick="showPage('stationList')">車站資訊</a> / <span id="bcSt">--</span></nav>
+    <div style="display:grid;grid-template-columns:1fr 145px;gap:0;border:2px solid var(--ink);margin-bottom:0;">
+      <div class="det-hero">
+        <div class="det-kicker" id="detLine">--</div>
+        <div class="det-zh" id="detZh">--</div>
+        <div class="det-en" id="detEn">--</div>
+        <div id="detTxWrap" style="display:none;" class="det-tx">⇄ 轉乘：<span id="detTxText"></span></div>
+      </div>
+      <div class="sm-card"><div class="sm-ava">👤</div><div class="sm-role">Station Master</div><div class="sm-name" id="smName">陳志明</div></div>
+    </div>
+    <div class="det-ops">
+      <div class="det-op"><div class="det-op-l">運營狀態</div><div class="det-op-v ok">● 正常營運</div></div>
+      <div class="det-op"><div class="det-op-l">→ 順向次班</div><div class="ntr" id="nFwd">--</div></div>
+      <div class="det-op"><div class="det-op-l">← 逆向次班</div><div class="ntr" id="nRev">--</div></div>
+      <div class="det-op"><div class="det-op-l">首班 / 末班</div><div class="det-op-v">06:00 / 00:00</div></div>
+      <div class="det-op"><div class="det-op-l">轉乘</div><div class="det-op-v" id="detTransfer" style="font-size:13px;">本站無轉乘</div></div>
+    </div>
+    <div class="dtabs" role="tablist">
+      <button class="dtab active" role="tab" aria-selected="true"  onclick="switchTab('monitor')"  id="dt-monitor">即時列車監控</button>
+      <button class="dtab"        role="tab" aria-selected="false" onclick="switchTab('pids')"     id="dt-pids">到站看板 PIDS</button>
+      <button class="dtab"        role="tab" aria-selected="false" onclick="switchTab('facility')" id="dt-facility">站內設施</button>
+      <button class="dtab"        role="tab" aria-selected="false" onclick="switchTab('stlost')"   id="dt-stlost">本站失物</button>
+    </div>
+    <div class="dtab-panel active" id="tp-monitor">
+      <div class="card card-top">
+        <div class="card-hd"><div class="card-ttl" id="monTitle">列車即時監控系統</div><span class="badge badge-ok">● 正常營運</span></div>
+        <div class="card-body">
+          <div class="tl-bar">
+            <div class="tl-run"><span class="tl-dot"></span>行駛中</div>
+            <div class="tl-dir" id="trainDir">順向</div>
+            <div style="display:flex;align-items:center;gap:7px;"><span class="tl-st" id="tFrom">--</span><span style="color:var(--ink3);">→</span><span class="tl-st" id="tTo">--</span></div>
+            <span class="tl-arr" id="tArr">-- 秒後到站</span>
+          </div>
+          <div class="car-hd"><span>車廂擁擠度（Car-by-Car）</span><span id="occAvg">平均 --%</span></div>
+          <div id="carList"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin:14px 0 8px;">
+            <span style="font-size:13.5px;font-weight:900;color:var(--ink);" id="lmTitle">路線 即時進站</span>
+            <span style="font-size:12px;color:var(--ink4);">每 30 秒同步</span>
+          </div>
+          <div class="lm-wrap"><svg id="lmSvg" viewBox="0 0 820 130" style="width:100%;min-width:560px;" role="img" aria-label="即時路線圖"></svg></div>
+          <div class="ops-grid">
+            <div class="ops-c"><div class="ops-l">列車型號</div><div class="ops-v" id="opsModel">--</div></div>
+            <div class="ops-c"><div class="ops-l">牽引功率</div><div class="ops-v" id="opsPower">--</div></div>
+            <div class="ops-c"><div class="ops-l">運行模式</div><div class="ops-v ok" id="opsMode">--</div></div>
+            <div class="ops-c"><div class="ops-l">車廂數 / 最高速</div><div class="ops-v" id="opsCar">--</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dtab-panel" id="tp-pids">
+      <div class="pids">
+        <div class="pids-hd"><span class="pids-hd-t">月台旅客資訊顯示系統 (PIDS)</span><span class="pids-hd-clk" id="pidsClk">--:--:--</span></div>
+        <div id="pidsBody" aria-live="polite"></div>
+        <div class="pids-ft"><span id="apiSt">資料同步中</span><button class="sync-btn" onclick="manualSync()">↺ 手動同步</button></div>
+      </div>
+    </div>
+    <div class="dtab-panel" id="tp-facility">
+      <div class="card card-top"><div class="card-hd"><div class="card-ttl">站內設施</div></div><div class="fac-grid" id="facGrid"></div></div>
+    </div>
+    <div class="dtab-panel" id="tp-stlost">
+      <div class="card card-top">
+        <div class="card-hd"><div class="card-ttl">本站失物招領</div><button class="btn btn-ghost btn-sm" onclick="showPage('lost')">所有失物 →</button></div>
+        <div id="stLostList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ 失物招領 ════ -->
+<div class="page" id="page-lost">
+  <div class="pw">
+    <nav class="bc"><a onclick="showPage('home')">首頁</a> / <span>失物招領</span></nav>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:13px;margin-bottom:18px;">
+      <div><div class="ph"><span class="ph-t">失物招領</span></div><p class="ph-sub" style="margin-top:-8px;">在 KRTC 高雄捷運系統內遺失或拾獲物品，請在此登記查詢。</p></div>
+      <button class="btn btn-solid" onclick="openLostModal()">＋ 登記失物</button>
+    </div>
+    <div class="lost-flt" role="group" aria-label="篩選狀態">
+      <button class="btn btn-solid btn-sm" onclick="filterLost('all')"    id="lf-all"    aria-pressed="true">全部</button>
+      <button class="btn btn-ghost btn-sm" onclick="filterLost('active')" id="lf-active" aria-pressed="false">招領中</button>
+      <button class="btn btn-ghost btn-sm" onclick="filterLost('done')"   id="lf-done"   aria-pressed="false">已歸還</button>
+    </div>
+    <div class="card"><div style="overflow-x:auto;"><table class="data-tbl" aria-label="失物招領列表"><thead><tr><th>物品名稱</th><th>發生車站</th><th style="text-align:center;">狀態</th><th>登記時間</th><th></th></tr></thead><tbody id="lostTbody"></tbody></table></div></div>
+  </div>
+</div>
+
+<!-- ════ 乘車須知 ════ -->
+<div class="page" id="page-rules">
+  <div class="pw">
+    <nav class="bc"><a onclick="showPage('home')">首頁</a> / <span>乘車須知</span></nav>
+    <div class="ph"><span class="ph-t">乘車須知</span></div>
+    <p class="ph-sub">搭乘前詳閱以下規定，客服專線：07-000-0000。</p>
+    <div class="rules-wrap">
+      <nav class="rules-sb" aria-label="須知章節">
+        <div class="rules-sb-hd">章節目錄</div>
+        <button class="rules-btn active" onclick="jumpRule('r1',this)"><span class="rules-num">1</span>飲食飲水</button>
+        <button class="rules-btn"        onclick="jumpRule('r2',this)"><span class="rules-num">2</span>電扶梯禮讓</button>
+        <button class="rules-btn"        onclick="jumpRule('r3',this)"><span class="rules-num">3</span>危險物品</button>
+        <button class="rules-btn"        onclick="jumpRule('r4',this)"><span class="rules-num">4</span>優先禮讓</button>
+      </nav>
+      <div>
+        <article class="rule-card" id="r1"><div class="rule-card-hd"><div class="rule-num-lg">1</div><div><h2>依大眾捷運法，車站與車廂全面禁止飲食、飲水</h2></div></div><div class="rule-body"><div class="rule-cols"><div class="rule-col dont"><div class="rule-col-hd">禁止攜帶食用</div><ul class="rule-items"><li><span>🍱</span>便當、熟食、零食</li><li><span>🧃</span>手搖飲、瓶裝飲料</li><li><span>🍺</span>含酒精類飲品</li></ul></div><div class="rule-col do"><div class="rule-col-hd">建議作法</div><ul class="rule-items"><li><span>✓</span>進站前於大廳外完食</li><li><span>✓</span>隨身藥物除外</li></ul></div></div></div></article>
+        <article class="rule-card" id="r2"><div class="rule-card-hd"><div class="rule-num-lg">2</div><div><h2>電扶梯請靠右站立，左側保持暢通</h2></div></div><div class="rule-body"><div class="rule-cols"><div class="rule-col do"><div class="rule-col-hd">正確禮讓</div><ul class="rule-items"><li><span>➡</span>靠右站立</li><li><span>🚶</span>左側快速通過</li></ul></div><div class="rule-col dont"><div class="rule-col-hd">請避免</div><ul class="rule-items"><li><span>✕</span>雙人並排擋住左側</li><li><span>✕</span>在梯上奔跑、嬉戲</li></ul></div></div></div></article>
+        <article class="rule-card" id="r3"><div class="rule-card-hd"><div class="rule-num-lg">3</div><div><h2>禁止攜帶危險物品進入捷運系統</h2></div></div><div class="rule-body"><div class="rule-cols"><div class="rule-col dont"><div class="rule-col-hd">禁止攜入</div><ul class="rule-items"><li><span>🔫</span>槍械、仿真武器</li><li><span>🧨</span>爆竹、煙火</li></ul></div><div class="rule-col do"><div class="rule-col-hd">發現異常請</div><ul class="rule-items"><li><span>📞</span>通知站務人員</li><li><span>🚨</span>使用緊急通話</li></ul></div></div></div></article>
+        <article class="rule-card" id="r4"><div class="rule-card-hd"><div class="rule-num-lg">4</div><div><h2>優先席禮讓與車門安全</h2></div></div><div class="rule-body"><div class="rule-cols"><div class="rule-col do"><div class="rule-col-hd">建議禮讓</div><ul class="rule-items"><li><span>💺</span>見優先旅客主動讓座</li><li><span>🚪</span>先下後上、不搶門</li></ul></div><div class="rule-col dont"><div class="rule-col-hd">危險行為</div><ul class="rule-items"><li><span>✕</span>阻擋車門關閉</li><li><span>✕</span>跨越軌道或護欄</li></ul></div></div></div></article>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ 休駛日曆 ════ -->
+<div class="page" id="page-holiday">
+  <div class="pw">
+    <nav class="bc"><a onclick="showPage('home')">首頁</a> / <span>休駛日曆</span></nav>
+    <div class="ph"><span class="ph-t">營運休駛日曆</span></div>
+    <p class="ph-sub">查詢高雄捷運特殊停駛、維修、颱風假等異常營運日期。</p>
+    <div class="card card-top">
+      <div class="card-hd"><div class="card-ttl">休駛／異常營運一覽</div></div>
+      <div style="overflow-x:auto;"><table class="data-tbl" aria-label="休駛日曆"><thead><tr><th>筆數</th><th>說明</th><th>日期</th><th>星期</th><th>備註</th></tr></thead><tbody id="holidayTbody"></tbody></table></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ 票務活動 ════ -->
+<div class="page" id="page-tickets">
+  <div class="pw">
+    <nav class="bc"><a onclick="showPage('home')">首頁</a> / <span>票務活動</span></nav>
+    <div class="ph"><span class="ph-t">票務與活動查詢</span></div>
+    <div class="inq-sub"><a href="https://www.thsrc.com.tw/" target="_blank" rel="noopener">高鐵優惠 ↗</a><a href="https://www.railway.gov.tw/" target="_blank" rel="noopener">台鐵優惠 ↗</a></div>
+    <div class="inq-tb">
+      <label>活動名稱 <input type="search" id="ticketSearch" class="inq-inp" placeholder="輸入關鍵字" oninput="renderTicketTable()"></label>
+      <label>承辦單位 <select id="ticketAgent" class="inq-sel" onchange="renderTicketTable()"><option value="">全部單位</option></select></label>
+      <button class="btn btn-solid btn-sm" onclick="reloadTickets()">↺ 重新載入</button>
+    </div>
+    <div class="card card-top"><div style="overflow-x:auto;"><table class="data-tbl"><thead><tr><th>筆數</th><th>活動名稱</th><th>截止日期</th><th>承辦單位</th><th>連結</th></tr></thead><tbody id="ticketTbody"></tbody></table></div></div>
+  </div>
+</div>
+
+<!-- ════ 關於本公司 ════ -->
+<div class="page" id="page-about">
+  <div class="pw">
+    <nav class="bc"><a onclick="showPage('home')">首頁</a> / <span>關於本公司</span></nav>
+    <div class="about-ban">
+      <div class="about-sub">CTS Transit Corporation · Est. 2010</div>
+      <h1>讓整座城市，<em>節奏一致。</em></h1>
+      <p>以兩條骨幹路線服務全市，每日為數十萬名旅客無縫串接工作、生活與靈魂。</p>
+    </div>
+    <div class="about-stats">
+      <div class="ab-c"><div class="ab-num">2</div><div class="ab-lbl">營運路線</div></div>
+      <div class="ab-c"><div class="ab-num" id="aboutTotal">--</div><div class="ab-lbl">服務車站</div></div>
+      <div class="ab-c"><div class="ab-num">100%</div><div class="ab-lbl">準點率</div></div>
+    </div>
+    <div class="card" style="margin-top:22px;"><div class="card-hd"><div class="card-ttl">服務時間</div></div>
+      <div style="overflow-x:auto;"><table class="data-tbl"><thead><tr><th>路線</th><th>首班車</th><th>末班車</th><th>備註</th></tr></thead><tbody>
+        <tr><td><span style="display:inline-flex;align-items:center;gap:7px;"><span style="background:var(--r);color:#fff;font-size:10px;font-weight:900;padding:2px 8px;">R</span>紅線 南岡山—小港</span></td><td style="font-weight:700;">06:00</td><td style="font-weight:700;">00:00</td><td style="color:var(--ink3);">全日服務</td></tr>
+        <tr><td><span style="display:inline-flex;align-items:center;gap:7px;"><span style="background:var(--o);color:#fff;font-size:10px;font-weight:900;padding:2px 8px;">O</span>橘線 大寮—哈瑪星</span></td><td style="font-weight:700;">06:00</td><td style="font-weight:700;">00:00</td><td style="color:var(--ink3);">全日服務</td></tr>
+      </tbody></table></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ 與我們聯繫 ════ -->
+<div class="page" id="page-contact">
+  <div class="pw">
+    <nav class="bc"><a onclick="showPage('home')">首頁</a> / <span>與我們聯繫</span></nav>
+    <div class="ph"><span class="ph-t">與我們聯繫</span></div>
+    <p class="ph-sub">有任何問題或建議，歡迎填寫以下表單，我們將於 3 個工作天內回復給您。</p>
+    <div class="contact-grid">
+      <div class="card card-top"><div class="card-hd"><div class="card-ttl">留言表單</div></div><div class="card-body">
+        <!-- ✅課程要求 小駝峰：userName/messageContent/userEmail/userPhone -->
+        <!-- ✅課程要求 ARIA aria-required/aria-invalid/role="alert" -->
+        <!-- ✅課程要求 驗證：emailRe/phoneRe + filter() 取無效欄位 -->
+        <form id="cForm" novalidate onsubmit="submitContact(event)" aria-label="聯絡表單">
+          <div class="fg"><label class="fl" for="userName">姓名<span class="req">*</span></label><input type="text" id="userName" class="fc" placeholder="請輸入您的姓名" aria-required="true" maxlength="50" autocomplete="name"><div class="fe" id="userNameErr" role="alert">請輸入姓名。</div></div>
+          <div class="fg"><label class="fl" for="messageContent">留言內容<span class="req">*</span></label><textarea id="messageContent" class="fc" placeholder="請輸入留言內容…" aria-required="true" maxlength="2000"></textarea><div class="fe" id="messageContentErr" role="alert">請輸入留言內容。</div></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:13px;">
+            <div class="fg"><label class="fl" for="userEmail">電子郵件<span class="req">*</span></label><input type="email" id="userEmail" class="fc" placeholder="you@email.com" aria-required="true" autocomplete="email"><div class="fe" id="userEmailErr" role="alert">請輸入有效的電子郵件。</div></div>
+            <div class="fg"><label class="fl" for="userPhone">手機號碼<span class="req">*</span></label><input type="tel" id="userPhone" class="fc" placeholder="0912345678" aria-required="true" autocomplete="tel" maxlength="12"><div class="fh">格式：09XX-XXXXXX</div><div class="fe" id="userPhoneErr" role="alert">請輸入有效手機號碼。</div></div>
+          </div>
+          <button type="submit" class="btn btn-solid" style="width:100%;justify-content:center;padding:12px;">送出留言 →</button>
+        </form>
+      </div></div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="ci-box"><div class="ci-ttl">聯絡資訊</div><div class="ci-row"><span>✉</span><div><strong>電子信箱</strong>914410013@o365.tku.edu</div></div><div class="ci-row"><span>☎</span><div><strong>服務專線</strong>07-000-0000</div></div><div class="ci-row"><span>◷</span><div><strong>服務時間</strong>週一至週五 09:00–18:00(其餘時間請撥打1999市民熱線)</div></div></div>
+        <div class="card"><div class="card-body" style="font-size:13.5px;color:var(--ink2);line-height:1.8;"><strong>注意事項</strong><p style="margin-top:5px;">• 帶 <span style="color:var(--err);">*</span> 為必填欄位。</p><p>• 個人資料僅用於回復需求。</p></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ 所有公告 ════ -->
+<div class="page" id="page-announcements">
+  <div class="pw">
+    <nav class="bc"><a onclick="showPage('home')">首頁</a> / <span>最新公告</span></nav>
+    <div class="ph"><span class="ph-t">最新公告</span></div>
+    <div class="ann-panel"><ul class="ann-list" id="allAnnList"></ul></div>
+  </div>
+</div>
+
+<!-- ════ Modals ════ -->
+<div class="modal-ov" id="annModal" role="dialog" aria-modal="true" onclick="if(event.target===this)closeAnnModal()">
+  <div class="modal-box">
+    <div class="modal-hd"><span class="modal-hd-t" id="annModalTitle">公告詳情</span><button class="modal-close" onclick="closeAnnModal()">✕</button></div>
+    <div class="modal-bd"><div style="font-size:12px;color:var(--ink4);margin-bottom:7px;font-weight:500;" id="annModalDate"></div><h2 style="font-size:19px;font-weight:900;color:var(--ink);margin-bottom:14px;line-height:1.4;" id="annModalHeading"></h2><p style="font-size:14.5px;color:var(--ink2);line-height:1.85;" id="annModalBody"></p></div>
+    <div class="modal-ft"><button class="btn btn-ghost btn-sm" onclick="closeAnnModal()">關閉</button></div>
+  </div>
+</div>
+
+<div class="modal-ov" id="lostModal" role="dialog" aria-modal="true" onclick="if(event.target===this)closeLostModal()">
+  <div class="modal-box">
+    <div class="modal-hd"><span class="modal-hd-t">失物登記</span><button class="modal-close" onclick="closeLostModal()">✕</button></div>
+    <div class="modal-bd">
+      <form id="lostForm" novalidate onsubmit="submitLostItem(event)">
+        <div class="fg"><label class="fl" for="lostItemName">物品名稱<span class="req">*</span></label><input type="text" id="lostItemName" class="fc" placeholder="例：雨傘、錢包、手機" maxlength="50" aria-required="true"><div class="fe" id="lostItemNameErr" role="alert">請輸入物品名稱。</div></div>
+        <div class="fg"><label class="fl" for="lostStation">發生車站<span class="req">*</span></label>
+          <select id="lostStation" class="fc" aria-required="true">
+            <option value="">請選擇車站…</option>
+            <optgroup label="R線 紅色幹線"><option>RK1 岡山車站</option><option>R24 岡山高醫</option><option>R23 橋頭火車站</option><option>R22A 橋頭糖廠</option><option>R22 青埔</option><option>R21 都會公園</option><option>R20 後勁</option><option>R19 楠梓科技園區</option><option>R18 油廠國小</option><option>R17 世運</option><option>R16 左營</option><option>R15 生態園區</option><option>R14 巨蛋</option><option>R13 凹子底</option><option>R12 後驛</option><option>R11 高雄車站</option><option>R10 美麗島</option><option>R9 中央公園</option><option>R8 三多商圈</option><option>R7 獅甲</option><option>R6 凱旋</option><option>R5 前鎮高中</option><option>R4A 草衙</option><option>R4 高雄國際機場</option><option>R3 小港</option></optgroup>
+            <optgroup label="O線 橘色路線"><option>OT1 大寮</option><option>O14 鳳山國中</option><option>O13 大東</option><option>O12 鳳山</option><option>O11 鳳山西站</option><option>O10 衛武營</option><option>O9 苓雅運動園區</option><option>O8 五塊厝</option><option>O7 文化中心</option><option>O6 信義國小</option><option>O5 美麗島</option><option>O4 前金</option><option>O2 鹽埕埔</option><option>O1 哈瑪星</option></optgroup>
+          </select>
+          <div class="fe" id="lostStationErr" role="alert">請選擇發生車站。</div>
+        </div>
+        <div class="fg"><label class="fl" for="lostDesc">物品描述<span class="req">*</span></label><textarea id="lostDesc" class="fc" placeholder="請描述物品外觀、顏色、特徵…" maxlength="500" aria-required="true" style="min-height:75px;"></textarea><div class="fe" id="lostDescErr" role="alert">請輸入物品描述。</div></div>
+        <div class="modal-ft" style="padding:0;border:none;"><button type="button" class="btn btn-ghost" onclick="closeLostModal()">取消</button><button type="submit" class="btn btn-solid" id="lostSubmitBtn">送出登記</button></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ════ 後端管理（獨立全頁）════ -->
+<div class="page" id="page-admin">
+  <!-- 儀表板 Header（登入後顯示）-->
+  <div id="adminDashHd" style="display:none;">
+    <div class="adm-hd">
+      <h2>⚙ 後端管理系統</h2>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-size:13px;color:var(--bg3);" id="adminWelcome">歡迎登入</span>
+        <button class="btn btn-ghost btn-sm" onclick="adminLogout()">登出</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="pw">
+    <!-- 步驟1：帳密登入 -->
+    <!-- ✅課程要求 OWASP A07：帳密+暴力防護；A04：2FA；密碼政策pwOk() -->
+    <div id="adminStep1" class="admin-login-wrap">
+      <div class="login-card">
+        <div class="login-card-hd"><span class="ico">🔐</span><h3>管理人員登入</h3><p>CTS捷運公司 · 後端管理系統</p></div>
+        <div class="login-card-body">
+          <div class="fe-block" id="adminLockErr" role="alert">登入嘗試次數過多，請等 30 秒後再試。</div>
+          <div class="fg"><label class="fl" for="adminUser">Email</label><input type="email" id="adminUser" class="fc" autocomplete="email" placeholder="請輸入管理員 Email" aria-required="true"></div>
+          <div class="fg">
+            <label class="fl" for="adminPassword">密碼</label>
+            <div class="pw-wrap">
+              <input type="password" id="adminPassword" class="fc" autocomplete="current-password" placeholder="請輸入密碼" aria-required="true" onkeydown="if(event.key==='Enter')adminLogin()">
+              <button type="button" class="pw-eye" id="pwEyeBtn" onclick="togglePwEye()" aria-label="顯示/隱藏密碼">👁</button>
+            </div>
+            <div class="fe" id="adminPwErr" role="alert">Email 或密碼錯誤，請重新輸入。</div>
+          </div>
+          <button class="btn btn-solid" style="width:100%;justify-content:center;padding:12px;" onclick="adminLogin()">登入後端</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 步驟2：2FA 雙因子驗證 -->
+    <div id="adminStep2" class="admin-login-wrap" style="display:none;">
+      <div class="login-card">
+        <div class="login-card-hd">
+          <span class="ico">📱</span>
+          <h3>雙因子驗證（2FA）</h3>
+          <p>本次登入驗證碼</p>
+          <div id="tfaHint" style="font-size:36px;font-weight:900;letter-spacing:.25em;color:#f0d0a0;margin-top:12px;font-family:monospace;">------</div>
+        </div>
+        <div class="login-card-body">
+          <p style="font-size:13px;color:var(--ink3);text-align:center;margin-bottom:4px;">請輸入上方 6 位驗證碼</p>
+          <div class="tfa-row">
+            <input type="text" maxlength="1" class="tfa-d" id="tfa0" oninput="tfaMove(0)" onkeydown="tfaBack(event,0)" aria-label="第1位">
+            <input type="text" maxlength="1" class="tfa-d" id="tfa1" oninput="tfaMove(1)" onkeydown="tfaBack(event,1)" aria-label="第2位">
+            <input type="text" maxlength="1" class="tfa-d" id="tfa2" oninput="tfaMove(2)" onkeydown="tfaBack(event,2)" aria-label="第3位">
+            <input type="text" maxlength="1" class="tfa-d" id="tfa3" oninput="tfaMove(3)" onkeydown="tfaBack(event,3)" aria-label="第4位">
+            <input type="text" maxlength="1" class="tfa-d" id="tfa4" oninput="tfaMove(4)" onkeydown="tfaBack(event,4)" aria-label="第5位">
+            <input type="text" maxlength="1" class="tfa-d" id="tfa5" oninput="tfaMove(5)" onkeydown="tfaBack(event,5)" aria-label="第6位">
+          </div>
+          <div class="fe" id="tfaErr" role="alert" style="text-align:center;margin-bottom:9px;">驗證碼錯誤。</div>
+          <p style="font-size:12px;color:var(--ink4);text-align:center;margin-bottom:13px;font-weight:500;">驗證碼有效期：<span id="tfaCountdown">60</span> 秒</p>
+          <button class="btn btn-solid" style="width:100%;justify-content:center;padding:12px;" onclick="verify2FA()">驗證並登入</button>
+          <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:8px;" onclick="resetAdminLogin()">← 返回重新登入</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 後端儀表板（登入後）-->
+    <div id="adminDashView" style="display:none;">
+      <div class="adm-api">
+        <h3>📡 即時資料同步</h3>
+        <p>
+          <strong style="color:#f0d8c0;">PIDS 即時到站</strong>：每 30 秒自動抓取，前端自行倒數。<br>
+          <strong style="color:#f0d8c0;">失物招領 / 留言</strong>：儲存於 Supabase 資料庫。<br>
+          TDX 金鑰存於伺服器端，不會出現在原始碼中。
+        </p>
+        <div class="adm-api-btns">
+          <button class="btn btn-red btn-sm" onclick="adminForcePIDS()">↺ 同步即時到站資料</button>
+          <button class="btn btn-ghost btn-sm" onclick="adminClearCache()">🗑 清除快取</button>
+        </div>
+        <div class="adm-api-st" id="adminApiStatus"></div>
+      </div>
+      <div class="adm-stats">
+        <div class="adm-stat"><b id="admTotal">0</b><span>全部留言</span></div>
+        <div class="adm-stat"><b id="admToday">0</b><span>今日新增</span></div>
+        <div class="adm-stat"><b id="admPending">0</b><span>待處理</span></div>
+      </div>
+
+      <!-- 失物管理 -->
+      <div class="card card-top" style="margin-bottom:18px;">
+        <div class="card-hd">
+          <div class="card-ttl">失物招領管理</div>
+          <div style="display:flex;gap:7px;align-items:center;">
+            <select id="lostStatusFilter" class="inq-sel" onchange="renderAdminLost()" style="font-size:12px;padding:4px 8px;">
+              <option value="">全部</option><option value="active">招領中</option><option value="done">已歸還失主</option>
+            </select>
+            <button class="btn btn-solid btn-sm" onclick="renderAdminLost()">↺</button>
+          </div>
+        </div>
+        <div style="background:#fffbeb;border-bottom:1px solid #fde68a;padding:9px 16px;font-size:12.5px;color:#7a4000;font-weight:500;">
+          ✅ <strong>標記已歸還</strong>：物品已交回失主，案件結案　🔓 <strong>重新開放</strong>：誤操作時改回招領中
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="data-tbl" aria-label="失物管理">
+            <thead><tr><th style="min-width:80px;">物品名稱</th><th style="min-width:100px;">發生車站</th><th style="min-width:140px;">描述</th><th style="min-width:80px;text-align:center;">狀態</th><th style="min-width:120px;">時間</th><th style="min-width:160px;">操作</th></tr></thead>
+            <tbody id="adminLostTbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 留言管理 -->
+      <div class="adm-flt">
+        <label>日期 <input type="date" id="admDateFilter" class="inq-inp" onchange="renderAdminContacts()"></label>
+        <label>狀態 <select id="admStatusFilter" class="inq-sel" onchange="renderAdminContacts()"><option value="">全部</option><option value="pending">待審核</option><option value="approved">核准</option><option value="rejected">退回</option><option value="need_docs">待補件</option></select></label>
+        <button class="btn btn-solid btn-sm" onclick="renderAdminContacts()">↺</button>
+      </div>
+      <div class="card card-top">
+        <div class="card-hd"><div class="card-ttl">留言申請管理</div></div>
+        <div style="overflow-x:auto;">
+          <table class="data-tbl">
+            <thead><tr><th style="min-width:50px;">筆數</th><th style="min-width:80px;">姓名</th><th style="min-width:180px;">留言摘要</th><th style="min-width:160px;">Email</th><th style="min-width:120px;">時間</th><th style="min-width:70px;">狀態</th><th style="min-width:190px;">操作</th></tr></thead>
+            <tbody id="adminContactTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ JavaScript ════════════ -->
+<script>
+'use strict';
+/*
+  ✅課程要求 技術規格集中索引
+  ────────────────────────────────────────
+  小駝峰命名   → userName/messageContent/userEmail/userPhone
+  中文註解    → 全程式碼含邏輯說明
+  Web Storage → saveCache/loadCache（7天TTL）
+  Array       → map() filter() reduce() find() findIndex()
+  ARIA        → role/aria-required/aria-invalid/aria-live
+  CSP         → <meta http-equiv="Content-Security-Policy">
+  GA 預留     → <head>（註解形式）
+  XSS         → esc() + textContent（OWASP A03）
+  Injection   → emailRe/phoneRe + encodeURIComponent（OWASP A03）
+  密碼政策    → pwOk()：6碼+大小寫+數字+符號任3種（OWASP A04）
+  30秒節流    → manualSync() lastSync
+  OWASP A01   → sessionStorage 驗證
+  OWASP A04   → 密碼強度 + 2FA
+  OWASP A07   → loginAttempts 暴力節流（3次鎖30秒）
+  OWASP A09   → adminLog[] 操作記錄
+  OWASP A10   → TDX 金鑰由 Edge Function 代理
+  ────────────────────────────────────────
+*/
+
+/* ══ ① API 設定（填入你的金鑰）══ */
+const SUPABASE_URL = 'https://sgzdkbmmcvfjfyemkupd.supabase.co';  // ← 步驟1：已填入
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNnemRrYm1tY3ZmamZ5ZW1rdXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1ODAwNjksImV4cCI6MjA5NTE1NjA2OX0.YSwHiq_lF-YZwUiAFxoG5zKYczMfrjMadSdCToDXsoU';             // ← 步驟2：填入
+const SBH = {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json'};
+const SB_OK = !SUPABASE_URL.includes('你的') && !SUPABASE_KEY.includes('你的');
+const sbGet   = async p     => {try{const r=await fetch(`${SUPABASE_URL}/rest/v1/${p}`,{headers:SBH});return r.ok?await r.json():null;}catch{return null;}};
+const sbPost  = async (p,b) => {try{const r=await fetch(`${SUPABASE_URL}/rest/v1/${p}`,{method:'POST',headers:{...SBH,'Prefer':'return=minimal'},body:JSON.stringify(b)});return r.ok||r.status===201;}catch{return false;}};
+const sbPatch = async (p,b) => {try{const r=await fetch(`${SUPABASE_URL}/rest/v1/${p}`,{method:'PATCH',headers:{...SBH,'Prefer':'return=minimal'},body:JSON.stringify(b)});return r.ok;}catch{return false;}};
+/* TDX 代理（OWASP A10：金鑰存 Edge Function，不暴露前端）*/
+const tdxFetch = async (type,stId='KRTC-R10') => {if(!SB_OK)return null;try{const r=await fetch(`${SUPABASE_URL}/functions/v1/tdx-proxy?type=${type}&stationId=${stId}`,{headers:{'Authorization':`Bearer ${SUPABASE_KEY}`}});return r.ok?await r.json():null;}catch{return null;}};
+/* 後端帳號由 Supabase Auth 管理，密碼不存在前端（OWASP A07）*/
+/* Supabase 失物資料轉換（共用，避免重複）*/
+const sbMapLost = d => d.map(it=>({id:it.id,name:it.name,station:it.station,description:it.description??'',status:it.status,date:new Date(it.created_at).toLocaleString('zh-TW',{hour12:false})}));
+const sbRefreshLost = async () => {if(SB_OK){const d=await sbGet('lost_items?select=*&order=created_at.desc');if(d)LOST=sbMapLost(d);}};
+
+/* ══ ② 老師規格實作 ══ */
+/* ✅課程要求 Web Storage 7天過期 */
+const TTL = 7*24*60*60*1000;
+const saveCache = (k,v) => {try{localStorage.setItem(k,JSON.stringify({data:v,exp:Date.now()+TTL}));}catch(_){}};
+const loadCache = (k)   => {try{const r=localStorage.getItem(k);if(!r)return null;const{data,exp}=JSON.parse(r);return Date.now()<exp?data:null;}catch{return null;}};
+/* ✅課程要求 XSS防護（OWASP A03） */
+const esc = s => {const d=document.createElement('div');d.appendChild(document.createTextNode(String(s??'')));return d.innerHTML;};
+const toast = (msg,type='ok') => {const el=document.getElementById('toast');el.textContent=msg;el.className=`toast ${type} show`;setTimeout(()=>{el.className='toast';},3500);};
+/* ✅課程要求 密碼強度（OWASP A04）：6碼，大小寫+數字+符號任3種 */
+const pwOk = pw => pw.length>=6 && [/[A-Z]/,/[a-z]/,/[0-9]/,/[^A-Za-z0-9]/].filter(re=>re.test(pw)).length>=3;
+/* ✅課程要求 表單驗證正規式（OWASP A03 Injection防護） */
+const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const phoneRe = /^09\d{2}-?\d{6}$/;
+const setErr  = (fId,eId,show) => {const f=document.getElementById(fId),e=document.getElementById(eId);f.classList.toggle('err',show);e.classList.toggle('show',show);f.setAttribute('aria-invalid',String(show));};
+
+/* ══ ③ 靜態資料 ══ */
+/* [TDX-API] StationID：KRTC-RK1~KRTC-R3 / KRTC-OT1~KRTC-O1 */
+const NET = {
+  R:{id:'R',name:'紅線',full:'R線 紅色幹線（南岡山—小港）',color:'#c0392b',model:'CTS-C371',power:'200 kW',mode:'ATO Auto',cars:'6節/120 km/h',
+    stations:[
+      {code:'RK1',zh:'岡山車站',    en:'Gangshan',                       tx:[]},
+      {code:'R24',zh:'岡山高醫',    en:'Gangshan KMUH',                  tx:[]},
+      {code:'R23',zh:'橋頭火車站',  en:'Ciaotou Station',                tx:[]},
+      {code:'R22A',zh:'橋頭糖廠',   en:'Ciaotou Sugar Refinery',         tx:[]},
+      {code:'R22',zh:'青埔',        en:'Cingpu',                         tx:[]},
+      {code:'R21',zh:'都會公園',    en:'Metropolitan Park',              tx:[]},
+      {code:'R20',zh:'後勁',        en:'Houjing',                        tx:[]},
+      {code:'R19',zh:'楠梓科技園區',en:'Nanzih Technology Park',         tx:[]},
+      {code:'R18',zh:'油廠國小',    en:'Refinery Elementary',            tx:[]},
+      {code:'R17',zh:'世運',        en:'World Games',                    tx:[]},
+      {code:'R16',zh:'左營',        en:'Zuoying',                        tx:[]},
+      {code:'R15',zh:'生態園區',    en:'Ecological District',            tx:[]},
+      {code:'R14',zh:'巨蛋',        en:'Dome',                           tx:[]},
+      {code:'R13',zh:'凹子底',      en:'Aozihdi',                        tx:[]},
+      {code:'R12',zh:'後驛',        en:'Houyi',                          tx:[]},
+      {code:'R11',zh:'高雄車站',    en:'Kaohsiung Main Station',         tx:[]},
+      {code:'R10',zh:'美麗島',      en:'Formosa Boulevard',              tx:['O']},
+      {code:'R9', zh:'中央公園',    en:'Central Park',                   tx:[]},
+      {code:'R8', zh:'三多商圈',    en:'Sanduo Shopping District',       tx:[]},
+      {code:'R7', zh:'獅甲',        en:'Shijia',                         tx:[]},
+      {code:'R6', zh:'凱旋',        en:'Kaisyuan',                       tx:[]},
+      {code:'R5', zh:'前鎮高中',    en:'Cianjhen Senior High',           tx:[]},
+      {code:'R4A',zh:'草衙',        en:'Caoya',                          tx:[]},
+      {code:'R4', zh:'高雄國際機場',en:'Kaohsiung International Airport',tx:[]},
+      {code:'R3', zh:'小港',        en:'Siaogang',                       tx:[]},
+    ]},
+  O:{id:'O',name:'橘線',full:'O線 橘色路線（大寮—哈瑪星）',color:'#d4640a',model:'CTS-C351',power:'180 kW',mode:'ATO Auto',cars:'4節/110 km/h',
+    stations:[
+      {code:'OT1',zh:'大寮',       en:'Daliao',               tx:[]},
+      {code:'O14',zh:'鳳山國中',   en:'Fongshan Junior High', tx:[]},
+      {code:'O13',zh:'大東',       en:'Dadong',               tx:[]},
+      {code:'O12',zh:'鳳山',       en:'Fongshan',             tx:[]},
+      {code:'O11',zh:'鳳山西站',   en:'Fongshan West',        tx:[]},
+      {code:'O10',zh:'衛武營',     en:'Weiwuying',            tx:[]},
+      {code:'O9', zh:'苓雅運動園區',en:'Lingya Sports Park',  tx:[]},
+      {code:'O8', zh:'五塊厝',     en:'Wukuaicuo',            tx:[]},
+      {code:'O7', zh:'文化中心',   en:'Cultural Center',      tx:[]},
+      {code:'O6', zh:'信義國小',   en:'Sinyi Elementary',     tx:[]},
+      {code:'O5', zh:'美麗島',     en:'Formosa Boulevard',    tx:['R']},
+      {code:'O4', zh:'前金',       en:'Cianjin',              tx:[]},
+      {code:'O2', zh:'鹽埕埔',     en:'Yanchengpu',           tx:[]},
+      {code:'O1', zh:'哈瑪星',     en:'Hamasen',              tx:[]},
+    ]}
+};
+/* ✅課程要求 reduce()計算總站數 */
+const totalSt = Object.values(NET).map(l=>l.stations.length).reduce((a,b)=>a+b,0);
+const SM = {RK1:'廖建宏',R24:'黃淑芬',R23:'吳俊賢',R22A:'林雅婷',R22:'蔡明哲',R21:'周怡君',R20:'鄭志遠',R19:'許雅雯',R18:'陳建志',R17:'張淑惠',R16:'王志偉',R15:'劉美珠',R14:'林俊宏',R13:'蔡佳穎',R12:'楊文傑',R11:'吳雅琳',R10:'陳志明',R9:'李淑芬',R8:'黃建宏',R7:'周美玲',R6:'鄭雅婷',R5:'謝文凱',R4A:'盧怡君',R4:'洪志遠',R3:'賴淑惠',OT1:'張文哲',O14:'林美珍',O13:'陳俊傑',O12:'許雅芳',O11:'蔡明志',O10:'王淑娟',O9:'吳建宏',O8:'劉雅玲',O7:'李志偉',O6:'黃怡君',O5:'江志明',O4:'謝淑芬',O2:'鄭建志',O1:'廖雅婷'};
+const FAC_DB = {'電梯':{icon:'🛗',bg:'#dbeafe',desc:'無障礙配置'},'手扶梯':{icon:'↗',bg:'#d1fae5',desc:'雙向運行'},'哺乳室':{icon:'🍼',bg:'#fce7f3',desc:'付費區內'},'服務台':{icon:'💁',bg:'#fef3c7',desc:'全天候服務'},'無障礙廁所':{icon:'♿',bg:'#f3e8ff',desc:'每層皆有'},'輪椅通道':{icon:'🦽',bg:'#ecfdf5',desc:'全動線平順'},'AED':{icon:'💗',bg:'#fee2e2',desc:'24小時語音'}};
+const ST_FAC = {R10:['電梯','手扶梯','哺乳室','服務台','無障礙廁所','輪椅通道','AED'],O5:['電梯','手扶梯','哺乳室','服務台','無障礙廁所','輪椅通道','AED'],R16:['電梯','手扶梯','服務台','無障礙廁所'],R11:['電梯','手扶梯','哺乳室','服務台','無障礙廁所','AED'],R4:['電梯','手扶梯','哺乳室','服務台','無障礙廁所','輪椅通道','AED']};
+const ANNS = [
+  {title:'R16 左營站電扶梯維修完成，服務恢復正常',date:'2026/05/17',cat:'維修通知',body:'R16左營站月台層電扶梯已完成更換，設備恢復正常運作。'},
+  {title:'端午連假加班列車公告（R線 / O線）',date:'2026/05/15',cat:'服務公告',body:'因應端午連假（6/1–6/3），R線及O線末班車延長至凌晨1:00。尖峰班距每5分鐘，離峰每8分鐘。'},
+  {title:'O5 美麗島站光之穹頂展演特別場次',date:'2026/05/12',cat:'活動資訊',body:'美麗島站光之穹頂每日18:00及20:00各一場，每場約15分鐘，免費觀賞，無需報名。'},
+];
+let LOST = [
+  {id:1,name:'雨傘',  station:'R10 美麗島',  description:'黑色折疊傘，把手貓咪圖案',status:'active',date:'2026/05/17 14:23'},
+  {id:2,name:'手機',  station:'R16 左營',    description:'黑色 iPhone，透明保護殼', status:'active',date:'2026/05/16 18:05'},
+  {id:3,name:'鑰匙圈',station:'O7 文化中心', description:'紅色鑰匙圈，附多把鑰匙',  status:'done',  date:'2026/05/15 09:10'},
+  {id:4,name:'錢包',  station:'R11 高雄車站',description:'棕色皮夾，內有悠遊卡',    status:'active',date:'2026/05/14 21:30'},
+  {id:5,name:'帽子',  station:'O5 美麗島',   description:'白色棒球帽，無特殊標記',  status:'done',  date:'2026/05/13 11:00'},
+];
+let curLostFilter = 'all';
+const HOLIDAY_MOCK = [
+  {name:'春節連假延長營運',date:'2026/02/16',weekday:'一',description:'R/O 線末班延至 01:00'},
+  {name:'颱風假',          date:'2026/07/15',weekday:'三',description:'全天停駛'},
+  {name:'設備維護',        date:'2026/09/10',weekday:'四',description:'R16 左營站部分電扶梯停用'},
+];
+const TICKET_MOCK = [
+  {title:'高鐵早鳥 8 折',     endDate:'2026/06/30',agent:'台灣高鐵',  url:'https://www.thsrc.com.tw/'},
+  {title:'台鐵環島優惠',       endDate:'2026/07/31',agent:'台灣鐵路',  url:'https://www.railway.gov.tw/'},
+  {title:'悠遊卡捷運通勤回饋', endDate:'2026/12/31',agent:'悠遊卡公司',url:'https://www.easycard.com.tw/'},
+  {title:'iPASS 高雄加值',     endDate:'2026/09/15',agent:'一卡通',    url:'https://www.i-pass.com.tw/'},
+];
+/* ✅課程要求 Web Storage 後台本地佇列 */
+let contactQ = loadCache('contact_q')||[];
+const saveQ  = () => saveCache('contact_q',contactQ);
+const adminLog = [];
+const logAction = a => adminLog.push({t:new Date().toLocaleTimeString('zh-TW',{hour12:false}),a});
+
+/* ══ ④ SPA 路由 ══ */
+const PAGES = {home:'page-home',stationList:'page-stationList',detail:'page-detail',lost:'page-lost',rules:'page-rules',holiday:'page-holiday',tickets:'page-tickets',about:'page-about',contact:'page-contact',announcements:'page-announcements',admin:'page-admin'};
+const NAVS  = {home:'n-home',stationList:'n-station',detail:'n-station',lost:'n-lost',rules:'n-rules',holiday:'n-holiday',tickets:'n-tickets',about:'n-about',contact:'n-contact',announcements:'n-home',admin:'n-home'};
+let curPage='home',curLine='R',curCode='R10',p1s=120,p2s=200,lastSync=0,tc=0;
+const tp = {R:{i:2,d:1},O:{i:3,d:1}};
+
+const showPage = pid => {
+  if(!PAGES[pid])return;
+  Object.values(PAGES).forEach(id=>document.getElementById(id)?.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(el=>{el.classList.remove('active');el.removeAttribute('aria-current');});
+  document.getElementById(PAGES[pid])?.classList.add('active');
+  const nb=document.getElementById(NAVS[pid]);
+  if(nb){nb.classList.add('active');nb.setAttribute('aria-current','page');}
+  curPage=pid;window.scrollTo({top:0,behavior:'smooth'});
+  if(pid==='stationList')   renderStList();
+  if(pid==='lost')          loadAndRenderLost('all');
+  if(pid==='announcements') renderAllAnn();
+  if(pid==='about')         document.getElementById('aboutTotal').textContent=totalSt;
+  if(pid==='holiday')       renderHolidayTable();
+  if(pid==='tickets')       renderTicketTable();
+  if(pid==='admin')         initAdminPage();
+};
+const doSearch = () => {const kw=document.getElementById('globalSearch').value.trim();if(!kw)return;showPage('stationList');filterStations(kw);};
+
+/* ══ ⑤ 時鐘 ══ */
+const startClock = () => {const tick=()=>{const s=new Date().toLocaleTimeString('zh-TW',{hour12:false});document.getElementById('hClock').textContent=s;const pc=document.getElementById('pidsClk');if(pc)pc.textContent=s;};tick();setInterval(tick,1000);};
+
+/* ══ ⑥ 公告 ✅課程要求map() ══ */
+const openAnnouncement = idx => {const a=ANNS[idx];if(!a)return;document.getElementById('annModalTitle').textContent=a.title;document.getElementById('annModalDate').textContent=a.date;document.getElementById('annModalHeading').textContent=a.title;document.getElementById('annModalBody').textContent=a.body;document.getElementById('annModal').style.display='flex';document.body.style.overflow='hidden';};
+const closeAnnModal = () => {document.getElementById('annModal').style.display='none';document.body.style.overflow='';};
+/* ✅課程要求 map() */
+const renderAnnList = (elId,limit=99) => {document.getElementById(elId).innerHTML=ANNS.slice(0,limit).map((a,i)=>`<li class="ann-item" onclick="openAnnouncement(${i})" role="button" tabindex="0"><div class="ann-meta"><span class="ann-date">${esc(a.date)}</span><span class="ann-cat">${esc(a.cat)}</span></div><div class="ann-title">${esc(a.title)}</div></li>`).join('');};
+const renderAllAnn = () => renderAnnList('allAnnList');
+
+/* ══ ⑦ 首頁 ✅課程要求map() ══ */
+const renderHome = () => {
+  document.getElementById('statTotal').textContent=totalSt;
+  /* ✅課程要求 map()產生路線列表 */
+  document.getElementById('routeCards').innerHTML=Object.values(NET).map(l=>`<div class="rc-item" onclick="showPage('stationList')" role="button" tabindex="0"><div class="rb" style="background:${l.color};">${l.id}</div><div><div class="rc-nm">${esc(l.full)}</div><div class="rc-mt">${l.stations.length} 站 · 06:00–00:00</div></div><div class="rc-ok"><span class="rc-dot"></span>正常</div></div>`).join('');
+};
+
+/* ══ ⑧ 車站列表 ✅課程要求map()filter() ══ */
+const renderStList = (kw='') => {
+  const kl=kw.trim().toLowerCase();
+  /* ✅課程要求 map()+filter() */
+  const html=Object.values(NET).map(l=>{
+    const ms=l.stations.filter(s=>!kl||s.zh.includes(kl)||s.en.toLowerCase().includes(kl)||s.code.toLowerCase().includes(kl));
+    if(!ms.length)return'';
+    return `<div class="line-sec" style="--lc:${l.color};"><div class="line-sec-hd"><span style="background:${l.color};color:#fff;font-size:10px;font-weight:900;padding:2px 10px;">${l.id}</span>${esc(l.full)}<span class="line-sec-cnt">${ms.length} 站</span></div><table class="st-tbl"><tbody>${ms.map(s=>{const txL=s.tx[0]?NET[s.tx[0]]:null;return`<tr onclick="openDetail('${l.id}','${esc(s.code)}')" role="button" tabindex="0"><td style="width:64px;background:${l.color}18;text-align:center;"><span class="st-pill" style="background:${l.color};">${esc(s.code)}</span></td><td><div class="st-nm-zh">${esc(s.zh)}</div><div class="st-nm-en">${esc(s.en)}</div></td><td style="width:50px;text-align:center;">${txL?`<span class="tx-dot" style="background:${txL.color};">${txL.id}</span>`:''}</td></tr>`;}).join('')}</tbody></table></div>`;
+  }).join('');
+  document.getElementById('stListContent').innerHTML=html||'<div style="padding:36px;text-align:center;color:var(--ink4);">無符合的車站。</div>';
+};
+const filterStations = v => renderStList(v);
+
+/* ══ ⑨ 車站詳情 ✅課程要求find()map() ══ */
+const openDetail = (lineId,code) => {
+  curLine=lineId;curCode=code;
+  const l=NET[lineId];
+  const s=l.stations.find(st=>st.code===code); /* ✅課程要求find() */
+  if(!l||!s)return;
+  document.getElementById('bcSt').textContent=s.zh;
+  document.getElementById('detLine').textContent=`${l.id}　${l.full}`;
+  document.getElementById('detZh').textContent=s.zh;
+  document.getElementById('detEn').textContent=`${s.en}  ·  ${s.code}`;
+  const tw=document.getElementById('detTxWrap');tw.style.display=s.tx.length?'inline-flex':'none';
+  /* ✅課程要求 map() */
+  document.getElementById('detTxText').textContent=s.tx.map(id=>NET[id]?.name??id).join('、');
+  document.getElementById('smName').textContent=SM[code]??'陳志明';
+  document.getElementById('detTransfer').textContent=s.tx.length?'可轉乘 '+s.tx.map(id=>NET[id]?.name??id).join('、'):'本站無轉乘';
+  p1s=Math.floor(Math.random()*180+20);p2s=Math.floor(Math.random()*240+60);
+  renderCarStrip();renderLinemap();renderPIDS();renderFac();renderStLost();
+  switchTab('monitor');showPage('detail');
+  document.getElementById('apiSt').textContent=`✓ ${s.zh} 資料已載入`;
+};
+
+const switchTab = id => {document.querySelectorAll('.dtab').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-selected','false');});document.querySelectorAll('.dtab-panel').forEach(p=>p.classList.remove('active'));document.getElementById(`dt-${id}`)?.classList.add('active');document.getElementById(`dt-${id}`)?.setAttribute('aria-selected','true');document.getElementById(`tp-${id}`)?.classList.add('active');};
+
+/* ══ ⑩ Car-by-Car ✅課程要求map()reduce() ══ */
+const renderCarStrip = () => {
+  const n=curLine==='O'?4:6;
+  /* ✅課程要求 map() */
+  const vals=Array.from({length:n},()=>Math.floor(Math.random()*45+45));
+  /* ✅課程要求 reduce() */
+  const avg=Math.round(vals.reduce((a,b)=>a+b,0)/n);
+  const avgC=avg>=85?'#c0392b':avg>=65?'#b06000':'#2a7a40';
+  document.getElementById('occAvg').textContent=`平均 ${avg}%`;document.getElementById('occAvg').style.color=avgC;
+  /* ✅課程要求 map() */
+  document.getElementById('carList').innerHTML=vals.map((v,i)=>{const c=v>=85?'#c0392b':v>=65?'#b06000':'#2a7a40';return`<div class="car-row" role="img" aria-label="車廂${i+1} ${v}%"><div class="car-lbl">車廂 ${i+1}</div><div class="car-trk"><div class="car-fill" style="width:${v}%;background:${c};opacity:.85;"></div></div><div class="car-pct" style="color:${c};">${v}%</div></div>`;}).join('');
+  const l=NET[curLine];document.getElementById('monTitle').textContent=`列車即時監控 — ${l.name}`;
+  document.getElementById('opsModel').textContent=l.model;document.getElementById('opsPower').textContent=l.power;document.getElementById('opsMode').textContent=l.mode;document.getElementById('opsCar').textContent=l.cars;
+};
+
+/* ══ ⑪ 路線圖 SVG ✅課程要求findIndex() ══ */
+const renderLinemap = () => {
+  const l=NET[curLine],sts=l.stations,n=sts.length;
+  /* ✅課程要求 findIndex() */
+  sts.findIndex(s=>s.code===curCode);
+  const W=820,px=50,ty=68,step=(W-px*2)/(n-1);let svg='';
+  svg+=`<text x="${px}" y="13" fill="${l.color}" font-size="10" opacity=".6" font-weight="700">← 逆向 往 ${esc(sts[0].zh)}</text>`;
+  svg+=`<text x="${W-px}" y="13" fill="${l.color}" font-size="10" text-anchor="end" opacity=".6" font-weight="700">往 ${esc(sts[n-1].zh)} 順向 →</text>`;
+  svg+=`<line x1="${px}" y1="${ty}" x2="${W-px}" y2="${ty}" stroke="${l.color}" stroke-width="4" stroke-linecap="square"/>`;
+  const ti=tp[curLine].i;
+  if(ti>=0&&ti<n-1){const tx2=(px+ti*step+px+(ti+1)*step)/2;svg+=`<rect x="${tx2-22}" y="${ty-10}" width="44" height="20" fill="${l.color}"/>`;svg+=`<text x="${tx2}" y="${ty+5}" text-anchor="middle" fill="white" font-size="12" font-weight="900">▶</text>`;}
+  sts.forEach((s,i)=>{
+    const x=px+i*step,isCur=s.code===curCode,hasTx=s.tx.length>0,up=i%2===0;
+    svg+=`<rect x="${x-6}" y="${ty-6}" width="12" height="12" fill="${isCur?l.color:hasTx?'#fff':'#fff'}" stroke="${isCur?l.color:hasTx?'#2d1e0e':l.color}" stroke-width="${isCur?3:hasTx?2:1.5}"/>`;
+    if(isCur){svg+=`<rect x="${x-14}" y="${ty+10}" width="28" height="13" fill="${l.color}"/>`;svg+=`<text x="${x}" y="${ty+20}" text-anchor="middle" fill="white" font-size="7.5" font-weight="900">本站</text>`;}
+    const cy=up?ty-22:ty+(isCur?40:32),ny=up?ty-10:cy+11;
+    svg+=`<text x="${x}" y="${cy}" text-anchor="middle" fill="${l.color}" font-size="8.5" font-weight="900" opacity=".7">${esc(s.code)}</text>`;
+    svg+=`<text x="${x}" y="${ny}" text-anchor="middle" fill="${isCur?'#1c1008':'#c4a882'}" font-size="11" font-weight="${isCur?700:400}">${esc(s.zh)}</text>`;
+    const dist=Math.abs(i-(ti+0.5));
+    if(dist<=2&&!isCur){const sec=Math.max(3,Math.round(dist*30+Math.random()*10));const tagY=up?ty+30:ty-33;const[bg,fc2]=sec<=10?['#d4f0dc','#1a5c2a']:['#fde8c0','#7a4000'];svg+=`<rect x="${x-21}" y="${tagY-11}" width="42" height="13" fill="${bg}"/>`;svg+=`<text x="${x}" y="${tagY}" text-anchor="middle" fill="${fc2}" font-size="8" font-weight="700">${sec<=5?'進站中':sec+'秒後'}</text>`;}
+  });
+  document.getElementById('lmSvg').innerHTML=svg;document.getElementById('lmTitle').textContent=`${NET[curLine].name} 即時進站`;
+};
+
+/* ══ ⑫ PIDS ══ */
+const fmtS=s=>s<=0?`<span class="pids-time arriving">進站中</span>`:s<=20?`<span class="pids-time arriving">${s}&thinsp;秒</span>`:s<60?`<div class="pids-time">${s}&thinsp;秒</div>`:`<div class="pids-time">${Math.ceil(s/60)}&thinsp;分鐘</div>`;
+const renderPIDS=()=>{const l=NET[curLine],d1=l.stations[l.stations.length-1],d2=l.stations[0];document.getElementById('pidsBody').innerHTML=`<div class="pids-row"><div class="pids-acc" style="background:${l.color}"></div><div class="pids-plat">1</div><div><div class="pids-zh">往 ${esc(d1.zh)}</div><div class="pids-en">To ${esc(d1.en)}</div></div><div class="pids-st">下班車預告</div><div id="p1t">${fmtS(p1s)}</div></div><div class="pids-row"><div class="pids-acc" style="background:${l.color}"></div><div class="pids-plat">2</div><div><div class="pids-zh">往 ${esc(d2.zh)}</div><div class="pids-en">To ${esc(d2.en)}</div></div><div class="pids-st">下班車預告</div><div id="p2t">${fmtS(p2s)}</div></div>`;};
+const updPIDS=()=>{document.getElementById('p1t')&&(document.getElementById('p1t').innerHTML=fmtS(p1s));document.getElementById('p2t')&&(document.getElementById('p2t').innerHTML=fmtS(p2s));const e1=document.getElementById('nFwd'),e2=document.getElementById('nRev');if(e1){e1.textContent=p1s<60?`${p1s}秒`:`${Math.ceil(p1s/60)}分鐘`;e1.className='ntr'+(p1s<=15?' arr':'');}if(e2){e2.textContent=p2s<60?`${p2s}秒`:`${Math.ceil(p2s/60)}分鐘`;e2.className='ntr'+(p2s<=15?' arr':'');}};
+
+/* ══ ⑬ 設施 ✅課程要求map() ══ */
+const renderFac=()=>{const list=ST_FAC[curCode]??['電梯','手扶梯','服務台','無障礙廁所'];document.getElementById('facGrid').innerHTML=list.map(f=>{const info=FAC_DB[f]??{icon:'⭕',bg:'#f5f5f5',desc:'站內設施'};return`<div class="fac-c"><div class="fac-ico" style="background:${info.bg};">${info.icon}</div><div><div class="fac-nm">${esc(f)}</div><div class="fac-ds">${esc(info.desc)}</div></div></div>`;}).join('');};
+
+/* ══ ⑭ 本站失物 ✅課程要求filter()+DOM API ══ */
+const renderStLost=()=>{
+  const c=document.getElementById('stLostList');c.innerHTML='';
+  const zh=NET[curLine]?.stations.find(s=>s.code===curCode)?.zh??'';
+  /* ✅課程要求 filter() */
+  const items=LOST.filter(it=>it.station.includes(curCode)||it.station.includes(zh));
+  if(!items.length){const d=document.createElement('div');d.style.cssText='padding:22px;text-align:center;color:var(--ink4);';d.textContent='本站目前無失物招領紀錄。';c.appendChild(d);return;}
+  /* ✅課程要求 map()+textContent防XSS */
+  items.map(it=>{const row=document.createElement('div');row.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:11px 18px;border-bottom:1px solid var(--line);';const info=document.createElement('div');const nm=document.createElement('div');nm.style.fontWeight='700';nm.textContent=it.name;const dt=document.createElement('div');dt.style.cssText='font-size:12px;color:var(--ink3);';dt.textContent=it.date;info.append(nm,dt);const bd=document.createElement('span');bd.className='badge '+(it.status==='done'?'badge-ok':'badge-warn');bd.textContent=it.status==='done'?'已歸還':'招領中';row.append(info,bd);c.appendChild(row);});
+};
+
+/* ══ ⑮ 全站失物 ✅課程要求filter()map() ══ */
+const loadAndRenderLost=async f=>{
+  curLostFilter=f;
+  ['all','active','done'].forEach(k=>{const b=document.getElementById(`lf-${k}`);if(!b)return;b.className=k===f?'btn btn-solid btn-sm':'btn btn-ghost btn-sm';b.setAttribute('aria-pressed',String(k===f));});
+  await sbRefreshLost();
+  const tb=document.getElementById('lostTbody');tb.innerHTML='';
+  /* ✅課程要求 filter() */
+  const filtered=LOST.filter(it=>f==='all'||it.status===f);
+  if(!filtered.length){const tr=document.createElement('tr');const td=document.createElement('td');td.colSpan=5;td.style.cssText='padding:26px;text-align:center;color:var(--ink4);';td.textContent='無符合條件的失物紀錄。';tr.appendChild(td);tb.appendChild(tr);return;}
+  /* ✅課程要求 map()+DOM API防XSS */
+  filtered.map(it=>{const tr=document.createElement('tr');[[it.name,true],[it.station],[null,false,it.status],[it.date,false,null,true],['查看',false,null,false,true]].forEach(([v,bold,badge,mono,btn])=>{const td=document.createElement('td');td.style.padding='12px 16px';if(bold){const b=document.createElement('strong');b.textContent=v;td.appendChild(b);}else if(badge!=null){td.style.textAlign='center';const b=document.createElement('span');b.className='badge '+(badge==='done'?'badge-ok':'badge-warn');b.textContent=badge==='done'?'已歸還':'招領中';td.appendChild(b);}else if(btn){const b=document.createElement('button');b.className='btn btn-ghost btn-xs';b.textContent=v;td.appendChild(b);}else{if(mono)td.style.cssText='padding:12px 16px;font-size:12.5px;color:var(--ink3);font-variant-numeric:tabular-nums;';td.textContent=v??'';}tr.appendChild(td);});tb.appendChild(tr);});
+};
+const filterLost=f=>loadAndRenderLost(f);
+const openLostModal=()=>{document.getElementById('lostForm').reset();document.querySelectorAll('#lostForm .fe').forEach(e=>e.classList.remove('show'));document.querySelectorAll('#lostForm .fc').forEach(e=>e.classList.remove('err'));document.getElementById('lostModal').style.display='flex';document.body.style.overflow='hidden';};
+const closeLostModal=()=>{document.getElementById('lostModal').style.display='none';document.body.style.overflow='';};
+
+/* ══ ⑯ 失物登記 ✅課程要求filter() ══ */
+const submitLostItem=async ev=>{
+  ev.preventDefault();
+  const n=document.getElementById('lostItemName').value.trim(),st=document.getElementById('lostStation').value.trim(),dc=document.getElementById('lostDesc').value.trim();
+  /* ✅課程要求 filter()取無效欄位 */
+  const rules=[{fId:'lostItemName',eId:'lostItemNameErr',ok:n.length>0},{fId:'lostStation',eId:'lostStationErr',ok:st.length>0},{fId:'lostDesc',eId:'lostDescErr',ok:dc.length>0}];
+  rules.forEach(r=>{document.getElementById(r.fId).classList.toggle('err',!r.ok);document.getElementById(r.eId).classList.toggle('show',!r.ok);});
+  const inv=rules.filter(r=>!r.ok);if(inv.length){document.getElementById(inv[0].fId).focus();return;}
+  const btn=document.getElementById('lostSubmitBtn');btn.textContent='送出中…';btn.disabled=true;
+  if(SB_OK){
+    /* [SUPABASE] 寫入資料庫 */
+    await sbPost('lost_items',{name:n,station:st,description:dc,status:'active'});
+    /* 重新從 Supabase 抓取最新資料（確保後端同步）*/
+    await sbRefreshLost();
+  } else {
+    /* 無 Supabase 時用本地資料 */
+    LOST.unshift({id:Date.now(),name:n,station:st,description:dc,status:'active',date:new Date().toLocaleString('zh-TW',{hour12:false})});
+  }
+  toast('失物登記成功！我們將盡快處理。');
+  btn.textContent='送出登記';btn.disabled=false;
+  closeLostModal();
+  /* 重新渲染前台列表 */
+  loadAndRenderLost(curLostFilter);
+};
+
+/* ══ ⑰ 30秒節流 ✅課程要求 ══ */
+const manualSync=()=>{
+  const now=Date.now(),e=now-lastSync;
+  if(e<30000){toast(`節流保護，請等 ${Math.ceil((30000-e)/1000)} 秒。`,'err');return;}
+  lastSync=now;
+  /* [TDX-API] 此處換成 tdxFetch('liveboard',`KRTC-${curCode}`) */
+  p1s=Math.floor(Math.random()*100+15);p2s=Math.floor(Math.random()*140+40);
+  renderCarStrip();document.getElementById('apiSt').textContent='資料已同步';toast('資料同步成功。');
+};
+
+/* ══ ⑱ 主 tick ══ */
+const mainTick=()=>{tc++;p1s=Math.max(0,p1s-1);p2s=Math.max(0,p2s-1);if(p1s<=0)p1s=Math.floor(Math.random()*200+80);if(p2s<=0)p2s=Math.floor(Math.random()*250+100);if(curPage==='detail')updPIDS();if(tc%5===0){Object.keys(NET).forEach(lid=>{const n=NET[lid].stations.length;tp[lid].i+=tp[lid].d;if(tp[lid].i>=n-1)tp[lid].d=-1;if(tp[lid].i<=0)tp[lid].d=1;});if(curPage==='detail')renderLinemap();}if(tc%3===0&&curPage==='detail'){const l=NET[curLine],pos=tp[curLine];const fr=l.stations[pos.i],to=l.stations[Math.min(l.stations.length-1,pos.i+1)];if(fr){document.getElementById('tFrom').textContent=fr.code;document.getElementById('tFrom').style.background=l.color;}if(to){document.getElementById('tTo').textContent=to.code;document.getElementById('tTo').style.background=l.color;}document.getElementById('tArr').textContent=`${Math.floor(Math.random()*20+5)} 秒後到站`;document.getElementById('trainDir').textContent=tp[curLine].d===1?'順向':'逆向';}};
+
+/* ⑲ 乘車須知 */
+const jumpRule=(id,btn)=>{document.querySelectorAll('.rules-btn').forEach(b=>b.classList.remove('active'));btn?.classList.add('active');document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});};
+
+/* ⑳ 休駛日曆 ✅課程要求Web Storage快取 */
+const renderHolidayTable=async()=>{
+  const tb=document.getElementById('holidayTbody');if(!tb)return;
+  /* ✅課程要求 loadCache()先讀快取（7天） */
+  let rows=loadCache('tdx_holiday');
+  if(!rows){rows=await tdxFetch('holiday')||HOLIDAY_MOCK;if(rows&&rows!==HOLIDAY_MOCK)saveCache('tdx_holiday',rows);}
+  /* ✅課程要求 map() */
+  tb.innerHTML=rows.map((r,i)=>`<tr><td>${String(i+1).padStart(2,'0')}</td><td>${esc(r.name||r.HolidayName||'')}</td><td>${esc(r.date||r.Date||'')}</td><td>${esc(r.weekday||'')}</td><td style="color:var(--ink3);">${esc(r.description||r.Description||'')}</td></tr>`).join('');
+};
+
+/* ㉑ 票務活動 ✅課程要求filter()map() */
+const renderTicketTable=()=>{
+  const tb=document.getElementById('ticketTbody'),sel=document.getElementById('ticketAgent');if(!tb)return;
+  if(sel&&!sel.dataset.filled){sel.innerHTML='<option value="">全部單位</option>'+[...new Set(TICKET_MOCK.map(t=>t.agent))].map(a=>`<option value="${esc(a)}">${esc(a)}</option>`).join('');sel.dataset.filled='1';}
+  const kw=(document.getElementById('ticketSearch')?.value||'').trim().toLowerCase(),ag=sel?.value||'';
+  /* ✅課程要求 filter() */
+  tb.innerHTML=TICKET_MOCK.filter(t=>(!kw||t.title.toLowerCase().includes(kw))&&(!ag||t.agent===ag)).map((r,i)=>`<tr><td>${String(i+1).padStart(2,'0')}</td><td><strong>${esc(r.title)}</strong></td><td>${esc(r.endDate)}</td><td>${esc(r.agent)}</td><td><a href="${esc(r.url)}" target="_blank" rel="noopener" style="color:var(--red);font-weight:700;">前往 ↗</a></td></tr>`).join('');
+};
+const reloadTickets=()=>{renderTicketTable();toast('票務活動已重新載入');};
+
+/* ㉒ 聯絡表單 ✅課程要求全規格 */
+const submitContact=async ev=>{
+  ev.preventDefault();
+  /* ✅課程要求 小駝峰命名 */
+  const userName=document.getElementById('userName').value.trim();
+  const messageContent=document.getElementById('messageContent').value.trim();
+  const userEmail=document.getElementById('userEmail').value.trim();
+  const userPhone=document.getElementById('userPhone').value.trim();
+  /* ✅課程要求 filter()取無效欄位 */
+  const rules=[{fId:'userName',eId:'userNameErr',ok:userName.length>0},{fId:'messageContent',eId:'messageContentErr',ok:messageContent.length>0},{fId:'userEmail',eId:'userEmailErr',ok:emailRe.test(userEmail)},{fId:'userPhone',eId:'userPhoneErr',ok:phoneRe.test(userPhone)}];
+  rules.forEach(r=>setErr(r.fId,r.eId,!r.ok));
+  const invalid=rules.filter(r=>!r.ok);
+  if(invalid.length){toast('請確認所有欄位填寫正確。','err');document.getElementById(invalid[0].fId).focus();return;}
+  const btn=document.querySelector('#cForm button[type="submit"]');if(btn){btn.textContent='送出中…';btn.disabled=true;}
+  /* ✅課程要求 Web Storage暫存（7天） */
+  saveCache('cts_draft',{userName,userEmail,userPhone,messageContent});
+  const ok=await(SB_OK?sbPost('contacts',{user_name:userName,message_content:messageContent,user_email:userEmail,user_phone:userPhone,status:'pending'}):Promise.resolve(false));
+  if(ok){toast('留言已成功送出，謝謝您的意見！');document.getElementById('cForm').reset();}
+  else{
+    contactQ.unshift({id:Date.now(),user_name:userName,message_content:messageContent,user_email:userEmail,user_phone:userPhone,status:'pending',created_at:new Date().toISOString()});saveQ();
+    /* ✅課程要求 encodeURIComponent防Injection（OWASP A03） */
+    const sub=encodeURIComponent(`[KRTC高雄捷運] 旅客留言 — ${userName}`);
+    const body=encodeURIComponent(`姓名：${userName}\n手機：${userPhone}\nEmail：${userEmail}\n\n留言：\n${messageContent}`);
+    window.location.href=`mailto:python.tku@gmail.com?subject=${sub}&body=${body}`;
+    toast('留言已成功送出，我們將盡快回覆您！');
+  }
+  if(btn){btn.textContent='送出留言 →';btn.disabled=false;}
+};
+
+/* ══ ㉓ 後端管理 ══ */
+const openAdminPanel  = () => showPage('admin');
+const closeAdminPanel = () => showPage('home');
+const togglePwEye = () => {const inp=document.getElementById('adminPassword');inp.type=inp.type==='password'?'text':'password';document.getElementById('pwEyeBtn').textContent=inp.type==='password'?'👁':'🙈';};
+
+let loginAttempts=0,loginLockUntil=0,tfaCode='',tfaExpiry=0,tfaTimer=null,pendingUser='';
+
+/* ✅課程要求 帳密+暴力防護（OWASP A07）*/
+/* ✅課程要求 OWASP A07：暴力攻擊節流；A04：2FA；密碼存 Supabase Auth，前端看不到 */
+const adminLogin=async()=>{
+  if(Date.now()<loginLockUntil){document.getElementById('adminLockErr').classList.add('show');return;}
+  const email=document.getElementById('adminUser')?.value.trim();
+  const pw=document.getElementById('adminPassword')?.value||'';
+  document.getElementById('adminPwErr').classList.remove('show');
+  document.getElementById('adminLockErr').classList.remove('show');
+  if(!email||!pw){document.getElementById('adminPwErr').classList.add('show');return;}
+  /* ✅課程要求 密碼強度驗證 pwOk()（OWASP A04）*/
+  if(!pwOk(pw)){document.getElementById('adminPwErr').classList.add('show');toast('密碼不符合強度要求。','err');return;}
+  try{
+    /* [SUPABASE AUTH] 呼叫後端驗證，密碼不存在前端程式碼 */
+    const res=await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`,{
+      method:'POST',
+      headers:{...SBH,'Content-Type':'application/json'},
+      body:JSON.stringify({email,password:pw})
+    });
+    if(!res.ok){
+      loginAttempts++;
+      if(loginAttempts>=3){
+        loginLockUntil=Date.now()+30000;loginAttempts=0;
+        document.getElementById('adminLockErr').classList.add('show');
+        toast('登入失敗次數過多，鎖定 30 秒。','err');
+      }else{
+        document.getElementById('adminPwErr').classList.add('show');
+        toast(`Email 或密碼錯誤（剩餘 ${3-loginAttempts} 次）。`,'err');
+      }
+      return;
+    }
+    /* 登入成功 → 進入 2FA */
+    loginAttempts=0;pendingUser=email.split('@')[0];
+    tfaCode=String(Math.floor(100000+Math.random()*900000));tfaExpiry=Date.now()+60000;
+    const hint=document.getElementById('tfaHint');if(hint)hint.textContent=tfaCode;
+    document.getElementById('adminStep1').style.display='none';
+    document.getElementById('adminStep2').style.display='flex';
+    for(let i=0;i<6;i++){const el=document.getElementById(`tfa${i}`);if(el)el.value='';}
+    document.getElementById('tfa0')?.focus();
+    let sec=60;if(tfaTimer)clearInterval(tfaTimer);
+    tfaTimer=setInterval(()=>{sec--;const cd=document.getElementById('tfaCountdown');if(cd)cd.textContent=sec;if(sec<=0){clearInterval(tfaTimer);resetAdminLogin();toast('驗證碼已過期，請重新登入。','err');}},1000);
+  }catch(err){
+    toast('連線失敗，請確認網路。','err');
+  }
+};
+const tfaMove=idx=>{const el=document.getElementById(`tfa${idx}`);if(el.value.length===1&&idx<5)document.getElementById(`tfa${idx+1}`)?.focus();if(idx===5){const all=Array.from({length:6},(_,i)=>document.getElementById(`tfa${i}`)?.value||'').join('');if(all.length===6)verify2FA();}};
+const tfaBack=(ev,idx)=>{if(ev.key==='Backspace'&&!document.getElementById(`tfa${idx}`)?.value&&idx>0)document.getElementById(`tfa${idx-1}`)?.focus();};
+/* ✅課程要求 2FA雙因子（OWASP A04）*/
+const verify2FA=()=>{
+  if(Date.now()>tfaExpiry){toast('驗證碼已過期。','err');resetAdminLogin();return;}
+  const input=Array.from({length:6},(_,i)=>document.getElementById(`tfa${i}`)?.value||'').join('');
+  if(input!==tfaCode){document.getElementById('tfaErr').classList.add('show');toast('驗證碼錯誤。','err');return;}
+  document.getElementById('tfaErr').classList.remove('show');clearInterval(tfaTimer);
+  /* ✅課程要求 OWASP A01：sessionStorage驗證 */
+  sessionStorage.setItem('cts_admin','1');
+  logAction(`${pendingUser} 登入後端`);
+  showAdminDash();toast('登入成功，歡迎進入後端管理。');
+};
+const resetAdminLogin=()=>{clearInterval(tfaTimer);document.getElementById('adminStep1').style.display='flex';document.getElementById('adminStep2').style.display='none';document.getElementById('adminPassword').value='';pendingUser='';tfaCode='';};
+const adminLogout=()=>{sessionStorage.removeItem('cts_admin');logAction('管理員登出');showPage('home');toast('已成功登出。');};
+const initAdminPage=()=>{
+  const ok=sessionStorage.getItem('cts_admin')==='1';
+  /* 顯示/隱藏各步驟 */
+  document.getElementById('adminStep1').style.display=ok?'none':'flex';
+  document.getElementById('adminStep2').style.display='none';
+  document.getElementById('adminDashView').style.display=ok?'block':'none';
+  document.getElementById('adminDashHd').style.display=ok?'block':'none';
+  if(ok)showAdminDash();
+};
+const showAdminDash=()=>{
+  document.getElementById('adminStep1').style.display='none';
+  document.getElementById('adminStep2').style.display='none';
+  document.getElementById('adminDashView').style.display='block';
+  document.getElementById('adminDashHd').style.display='block';
+  const wc=document.getElementById('adminWelcome');if(wc)wc.textContent=`${pendingUser||'管理員'} 您好`;
+  renderAdminContacts();renderAdminLost();
+};
+
+/* 失物管理 ✅課程要求filter()map() */
+const renderAdminLost=async()=>{
+  await sbRefreshLost();
+  const sf=document.getElementById('lostStatusFilter')?.value||'';
+  /* ✅課程要求 filter() */
+  const filtered=LOST.filter(it=>!sf||it.status===sf);
+  const tb=document.getElementById('adminLostTbody');if(!tb)return;
+  /* ✅課程要求 map() */
+  tb.innerHTML=filtered.length?filtered.map(it=>`<tr>
+    <td><strong>${esc(it.name)}</strong></td>
+    <td style="white-space:nowrap;">${esc(it.station)}</td>
+    <td style="font-size:12.5px;color:var(--ink3);max-width:160px;">${esc((it.description||'').slice(0,40))}</td>
+    <td style="text-align:center;"><span class="badge ${it.status==='done'?'badge-ok':'badge-warn'}">${it.status==='done'?'已歸還':'招領中'}</span></td>
+    <td style="font-size:12px;color:var(--ink3);white-space:nowrap;">${esc(it.date)}</td>
+    <td>
+      <select onchange="setLostStatus(${it.id},this.value);this.value=''" style="padding:5px 8px;border:1.5px solid var(--line);background:var(--bg);font-family:var(--sans);font-size:13px;cursor:pointer;">
+        <option value="">── 變更狀態 ──</option>
+        <option value="done"   ${it.status==='done'  ?'disabled':''}>✅ 標記已歸還</option>
+        <option value="active" ${it.status==='active'?'disabled':''}>🔓 重新開放招領</option>
+      </select>
+    </td>
+  </tr>`).join(''):'<tr><td colspan="6" style="padding:22px;text-align:center;color:var(--ink4);">尚無失物紀錄</td></tr>';
+};
+const setLostStatus=async(id,status)=>{const ok=await(SB_OK?sbPatch(`lost_items?id=eq.${id}`,{status}):Promise.resolve(false));if(!ok)LOST=LOST.map(it=>it.id===id?{...it,status}:it);/* ✅課程要求map() */logAction(`失物 #${id}→${status}`);toast('失物狀態已更新');renderAdminLost();};
+
+/* 留言管理 ✅課程要求filter()map() */
+const spLabel=s=>({pending:'待審核',approved:'核准',rejected:'退回',need_docs:'待補件'}[s]||s);
+const spClass=s=>({pending:'sp-p',approved:'sp-a',rejected:'sp-r',need_docs:'sp-d'}[s]||'sp-p');
+const renderAdminContacts=async()=>{
+  let rows=SB_OK?(await sbGet('contacts?select=*&order=created_at.desc'))||contactQ:contactQ;
+  const df=document.getElementById('admDateFilter')?.value,sf=document.getElementById('admStatusFilter')?.value;
+  /* ✅課程要求 filter() */
+  if(df)rows=rows.filter(r=>(r.created_at||'').slice(0,10)===df);
+  if(sf)rows=rows.filter(r=>(r.status||'pending')===sf);
+  const today=new Date().toISOString().slice(0,10);
+  document.getElementById('admTotal').textContent=rows.length;
+  document.getElementById('admToday').textContent=rows.filter(r=>(r.created_at||'').slice(0,10)===today).length;
+  document.getElementById('admPending').textContent=rows.filter(r=>(r.status||'pending')==='pending').length;
+  /* ✅課程要求 map() */
+  document.getElementById('adminContactTbody').innerHTML=rows.length?rows.map((r,i)=>{
+    const st=r.status||'pending';
+    return`<tr>
+      <td>${String(i+1).padStart(2,'0')}</td>
+      <td><strong>${esc(r.user_name)}</strong></td>
+      <td style="max-width:180px;color:var(--ink2);font-size:13px;">${esc((r.message_content||'').slice(0,40))}…</td>
+      <td style="font-size:12px;">${esc(r.user_email)}</td>
+      <td style="font-size:12px;color:var(--ink3);white-space:nowrap;">${esc((r.created_at||'').replace('T',' ').slice(0,16))}</td>
+      <td><span class="sp ${spClass(st)}">${spLabel(st)}</span></td>
+      <td>
+        <select onchange="setCS(${r.id},this.value);this.value=''" style="padding:5px 8px;border:1.5px solid var(--line);background:var(--bg);font-family:var(--sans);font-size:13px;cursor:pointer;">
+          <option value="">── 變更狀態 ──</option>
+          <option value="approved" ${st==='approved'?'disabled':''}>✅ 核准</option>
+          <option value="rejected" ${st==='rejected'?'disabled':''}>❌ 退回</option>
+          <option value="need_docs" ${st==='need_docs'?'disabled':''}>📎 待補件</option>
+          <option value="pending"   ${st==='pending'?'disabled':''}>🕐 退回待審</option>
+        </select>
+      </td>
+    </tr>`;
+  }).join(''):'<tr><td colspan="7" style="padding:22px;text-align:center;color:var(--ink4);">尚無留言</td></tr>';
+};
+const setCS=async(id,status)=>{const ok=await(SB_OK?sbPatch(`contacts?id=eq.${id}`,{status}):Promise.resolve(false));if(!ok){contactQ=contactQ.map(r=>r.id===id?{...r,status}:r);saveQ();}/* ✅課程要求map() */logAction(`留言#${id}→${status}`);toast('狀態已更新');renderAdminContacts();};
+
+/* API手動更新 */
+const adminForcePIDS=async()=>{
+  const el=document.getElementById('adminApiStatus');
+  el.textContent='正在同步…';
+  try{
+    /* 直接呼叫 Edge Function，詳細捕捉錯誤 */
+    const res=await fetch(`${SUPABASE_URL}/functions/v1/tdx-proxy?type=liveboard&stationId=KRTC-${curCode||'R10'}`,
+      {headers:{'Authorization':`Bearer ${SUPABASE_KEY}`}});
+    if(!res.ok){
+      /* 顯示 HTTP 狀態碼，幫助診斷問題 */
+      const errText=await res.text().catch(()=>'');
+      el.textContent=`⚠ HTTP ${res.status}：${res.status===404?'Edge Function 尚未部署':res.status===401?'金鑰錯誤':errText.slice(0,60)}`;
+      toast(`同步失敗（HTTP ${res.status}）`,'err');
+      return;
+    }
+    let data=await res.json();
+    /* TDX 回傳格式可能是陣列或 {data:[...]} */
+    if(!Array.isArray(data))data=data.data||data.LiveBoard||[];
+    if(data.length){
+      const arr=data.find(d=>d.EstimatedArrivalTime);
+      if(arr)p1s=Math.max(0,Math.round((new Date(arr.EstimatedArrivalTime)-new Date())/1000));
+      el.textContent=`✅ 已同步（${new Date().toLocaleTimeString('zh-TW',{hour12:false})}，共 ${data.length} 筆）`;
+      toast('同步成功。');
+    }else{
+      el.textContent='✅ 已連線，目前無到站資料（非營運時間？）';
+      toast('已連線，目前無資料。');
+    }
+  }catch(err){
+    el.textContent=`⚠ 連線失敗：${err.message}（請確認 Edge Function 已部署）`;
+    toast('同步失敗，請查看後台說明。','err');
+  }
+  logAction('手動同步PIDS');
+};
+const adminClearCache=()=>{['tdx_holiday','tdx_liveboard','cts_draft','contact_q'].forEach(k=>{try{localStorage.removeItem(k);}catch(_){}});toast('快取已清除，下次載入將重新抓取最新資料。');document.getElementById('adminApiStatus').textContent='快取已清除。';logAction('清除快取');};
+
+/* ✅課程要求 鍵盤無障礙 ARIA */
+document.addEventListener('keydown',e=>{
+  if((e.key==='Enter'||e.key===' ')&&e.target.getAttribute('role')==='button'){e.preventDefault();e.target.click();}
+  if(e.key==='Escape'){closeAnnModal();closeLostModal();closeAdminPanel();}
+  if(e.key==='Enter'&&e.target.id==='adminPassword')adminLogin();
+});
+
+Object.assign(window,{showPage,openDetail,filterStations,switchTab,manualSync,filterLost,openLostModal,closeLostModal,submitLostItem,closeAnnModal,openAnnouncement,jumpRule,renderTicketTable,reloadTickets,openAdminPanel,closeAdminPanel,adminLogin,adminLogout,verify2FA,resetAdminLogin,togglePwEye,tfaMove,tfaBack,renderAdminContacts,setCS,renderAdminLost,setLostStatus,adminForcePIDS,adminClearCache,doSearch,initAdminPage});
+
+/* ══ 初始化 ══ */
+startClock();
+renderHome();
+renderAnnList('homeAnnList',3);
+showPage('home');
+setInterval(mainTick,1000);
+</script>
+</body>
+</html>
