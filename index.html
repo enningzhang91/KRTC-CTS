@@ -63,27 +63,27 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:15p
 .mob-admin{color:var(--red);border-top:0.5px solid var(--line2);margin-top:6px;padding-top:14px;}
 /* ── Hero 雜誌封面版（#d9534f 磚紅）── */
 .hero{background:#d9534f;position:relative;overflow:hidden;isolation:isolate;}
-.hero-topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 28px 0;font-size:11px;font-weight:600;letter-spacing:.12em;color:#fff;text-transform:uppercase;max-width:var(--max);margin:0 auto;}
+.hero-topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 28px 0;font-size:11px;font-weight:600;letter-spacing:.12em;color:rgba(255,255,255,.75);text-transform:uppercase;max-width:var(--max);margin:0 auto;}
 .hero-live-badge{display:flex;align-items:center;gap:5px;background:rgba(0,0,0,.2);border-radius:20px;padding:3px 10px;font-size:11px;color:#fff;font-weight:600;}
 .hero-live-dot{width:5px;height:5px;background:#4ade80;border-radius:50%;}
 /* 主體：左側大標題 + 右側方塊直排 */
 .hero-body{padding:20px 28px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:28px;max-width:var(--max);margin:0 auto;}
 .hero-left{flex:1;min-width:0;}
-.hero-kicker{font-size:11px;font-weight:600;letter-spacing:.1em;color:#fff;text-transform:uppercase;margin-bottom:10px;}
+.hero-kicker{font-size:11px;font-weight:600;letter-spacing:.1em;color:rgba(255,255,255,.8);text-transform:uppercase;margin-bottom:10px;}
 .hero-title{font-size:clamp(32px,6vw,56px);font-weight:800;color:#fff;line-height:.93;letter-spacing:-1.5px;margin-bottom:4px;}
 .hero-title-sub{font-size:clamp(32px,6vw,56px);font-weight:800;color:rgba(255,255,255,.2);line-height:.93;letter-spacing:-1.5px;margin-bottom:20px;}
-.hero-tagline{font-size:14px;color:rgba(255,255,255,.92);line-height:1.7;max-width:320px;}
+.hero-tagline{font-size:14px;color:rgba(255,255,255,.6);line-height:1.7;max-width:320px;}
 /* 右側：方塊直排 + 按鈕 */
 .hero-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;padding-top:4px;}
 .hero-stat-card{background:rgba(255,255,255,.13);border:0.5px solid rgba(255,255,255,.22);border-radius:12px;padding:11px 20px;text-align:right;min-width:100px;}
 .hero-stat-n{font-size:22px;font-weight:800;color:#fff;line-height:1;letter-spacing:-.5px;}
 .hero-stat-n.ok{color:#4ade80;}
-.hero-stat-l{font-size:10px;color:rgba(255,255,255,.85);margin-top:3px;letter-spacing:.05em;text-transform:uppercase;}
+.hero-stat-l{font-size:10px;color:rgba(255,255,255,.45);margin-top:3px;letter-spacing:.05em;text-transform:uppercase;}
 /* 按鈕緊接在方塊下方 */
 .hero-btn-group{display:flex;flex-direction:column;gap:7px;align-items:flex-end;margin-top:4px;}
 .hero-btn-white{background:#fff;color:#d9534f;border:none;padding:10px 22px;border-radius:980px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--sans);white-space:nowrap;transition:opacity .15s;}
 .hero-btn-white:hover{opacity:.9;}
-.hero-btn-ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.28);padding:9px 22px;border-radius:980px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--sans);white-space:nowrap;}
+.hero-btn-ghost{background:transparent;color:rgba(255,255,255,.8);border:1.5px solid rgba(255,255,255,.28);padding:9px 22px;border-radius:980px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--sans);white-space:nowrap;}
 .hero-btn-ghost:hover{border-color:rgba(255,255,255,.6);}
 /* 小火車獨立底部區塊，不壓任何內容 */
 .hero-train-strip{height:64px;position:relative;margin-top:20px;}
@@ -220,9 +220,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:15p
 /* 頁首紅色 Hero */
 .rules-hero{background:#d9534f;border-radius:var(--r);padding:22px 24px;color:#fff;position:relative;overflow:hidden;margin-bottom:14px;}
 .rules-hero::after{content:'';position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.04);pointer-events:none;}
-.rules-hero-kicker{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#2d0a0a;margin-bottom:7px;}
+.rules-hero-kicker{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(0,0,0,.5);margin-bottom:7px;}
 .rules-hero-title{font-size:28px;font-weight:800;color:#1d1d1f;letter-spacing:-.5px;line-height:1;margin-bottom:7px;}
-.rules-hero-sub{font-size:13px;color:#2d0a0a;line-height:1.65;max-width:360px;}
+.rules-hero-sub{font-size:13px;color:rgba(0,0,0,.55);line-height:1.65;max-width:360px;}
 /* 規則卡片 */
 .rule-card{background:#fff;border-radius:var(--r);border:0.5px solid var(--line);margin-bottom:12px;overflow:hidden;scroll-margin-top:72px;}
 .rule-card-hd{padding:18px 20px 14px;display:flex;align-items:center;gap:14px;border-bottom:0.5px solid var(--line2);}
@@ -280,15 +280,15 @@ input[type="password"]::-webkit-credentials-auto-fill-button{visibility:hidden;d
 .about-hero{background:#d9534f;border-radius:var(--r);padding:28px 28px 24px;position:relative;overflow:hidden;margin-bottom:14px;}
 .about-hero::after{content:'';position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.06);pointer-events:none;}
 .about-hero::before{content:'';position:absolute;right:60px;bottom:-40px;width:140px;height:140px;border-radius:50%;background:rgba(0,0,0,.06);pointer-events:none;}
-.about-kicker{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.9);margin-bottom:10px;}
+.about-kicker{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:10px;}
 .about-title{font-size:32px;font-weight:800;color:#fff;letter-spacing:-.6px;line-height:1.05;margin-bottom:10px;}
-.about-title em{color:rgba(255,255,255,.65);font-style:normal;}
-.about-sub{font-size:13.5px;color:rgba(255,255,255,.92);line-height:1.75;max-width:420px;margin-bottom:20px;}
+.about-title em{color:rgba(255,255,255,.35);font-style:normal;}
+.about-sub{font-size:13.5px;color:rgba(255,255,255,.6);line-height:1.75;max-width:420px;margin-bottom:20px;}
 .about-stats{display:flex;gap:0;border-top:0.5px solid rgba(255,255,255,.18);padding-top:18px;}
 .as{flex:1;text-align:center;position:relative;}
 .as+.as::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);height:28px;width:0.5px;background:rgba(255,255,255,.2);}
 .as-n{font-size:28px;font-weight:800;color:#fff;line-height:1;letter-spacing:-.5px;}
-.as-l{font-size:10px;color:rgba(255,255,255,.85);margin-top:4px;letter-spacing:.04em;text-transform:uppercase;}
+.as-l{font-size:10px;color:rgba(255,255,255,.45);margin-top:4px;letter-spacing:.04em;text-transform:uppercase;}
 /* 路線卡片 */
 .route-info-card{background:#fff;border-radius:var(--r);border:0.5px solid var(--line);overflow:hidden;margin-bottom:12px;}
 .route-info-hd{padding:14px 18px 12px;display:flex;align-items:center;gap:12px;border-bottom:0.5px solid var(--line2);}
@@ -921,7 +921,6 @@ input[type="password"]::-webkit-credentials-auto-fill-button{visibility:hidden;d
     </div>
   </div>
 </div>
-</div>
 <!-- Modal：公告 -->
 <div class="modal-ov" id="annModal" role="dialog" aria-modal="true" aria-labelledby="annModalTitle" onclick="if(event.target===this)closeAnnModal()">
   <div class="modal-box">
@@ -965,17 +964,9 @@ input[type="password"]::-webkit-credentials-auto-fill-button{visibility:hidden;d
         </div>
         <div class="fg"><label class="fl" for="lostDesc">物品描述<span class="req">*</span></label><textarea id="lostDesc" class="fc" placeholder="請描述物品外觀、顏色、特徵…" maxlength="500" aria-required="true" style="min-height:75px;"></textarea><div class="fe" id="lostDescErr" role="alert">請輸入物品描述。</div></div>
         <div class="form-2col">
-           <div class="fg">
-            <label class="fl" for="lostContactName">聯絡人姓名<span class="req">*</span></label>
-            <input type="text" id="lostContactName" class="fc" placeholder="請輸入您的姓名" maxlength="50" aria-required="true">
-            <div class="fe" id="lostContactNameErr" role="alert">請輸入聯絡人姓名。</div>
-            </div>
-            <div class="fg">
-            <label class="fl" for="lostContactPhone">聯絡電話<span class="req">*</span></label>
-            <input type="tel" id="lostContactPhone" class="fc" placeholder="0912345678" maxlength="12" aria-required="true">  
-            <div class="fe" id="lostContactPhoneErr" role="alert">請輸入有效手機號碼。</div>
-            </div>
-         </div>
+          <div class="fg"><label class="fl" for="lostContactName">聯絡人姓名<span class="req">*</span></label><input type="text" id="lostContactName" class="fc" placeholder="請輸入您的姓名" maxlength="50" aria-required="true"><div class="fe" id="lostContactNameErr" role="alert">請輸入聯絡人姓名。</div></div>
+          <div class="fg"><label class="fl" for="lostContactPhone">聯絡電話<span class="req">*</span></label><input type="tel" id="lostContactPhone" class="fc" placeholder="0912345678" maxlength="12" aria-required="true"><div class="fe" id="lostContactPhoneErr" role="alert">請輸入有效手機號碼。</div></div>
+        </div>
         <div class="modal-ft" style="padding:0;border:none;"><button type="button" class="btn btn-outline btn-sm" onclick="closeLostModal()">取消</button><button type="submit" class="btn btn-solid" id="lostSubmitBtn">送出登記</button></div>
       </form>
     </div>
@@ -1580,12 +1571,13 @@ const openLostModal=()=>{
 const submitLostItem=async ev=>{
   ev.preventDefault()
   const n=document.getElementById('lostItemName').value.trim(),st=document.getElementById('lostStation').value.trim(),dc=document.getElementById('lostDesc').value.trim()
+  const cn=document.getElementById('lostContactName').value.trim(),cp=document.getElementById('lostContactPhone').value.trim()
   // ✅ filter()：找出未通過驗證的欄位
-  const rules=[{fId:'lostItemName',eId:'lostItemNameErr',ok:n.length>0},{fId:'lostStation',eId:'lostStationErr',ok:st.length>0},{fId:'lostDesc',eId:'lostDescErr',ok:dc.length>0}]
+  const rules=[{fId:'lostItemName',eId:'lostItemNameErr',ok:n.length>0},{fId:'lostStation',eId:'lostStationErr',ok:st.length>0},{fId:'lostDesc',eId:'lostDescErr',ok:dc.length>0},{fId:'lostContactName',eId:'lostContactNameErr',ok:cn.length>0},{fId:'lostContactPhone',eId:'lostContactPhoneErr',ok:phoneRe.test(cp)}]
   rules.forEach(r=>{document.getElementById(r.fId).classList.toggle('err',!r.ok);document.getElementById(r.eId).classList.toggle('show',!r.ok)})
   const inv=rules.filter(r=>!r.ok);if(inv.length){document.getElementById(inv[0].fId).focus();return}
   const btn=document.getElementById('lostSubmitBtn');btn.textContent='送出中…';btn.disabled=true
-  if(SB_OK){await sbPost('lost_items',{name:n,station:st,description:dc,status:'active'});await sbRefreshLost()}
+  if(SB_OK){await sbPost('lost_items',{name:n,station:st,description:dc,contact_name:cn,contact_phone:cp,status:'active'});await sbRefreshLost()}
   else LOST.unshift({id:Date.now(),name:n,station:st,description:dc,status:'active',date:new Date().toLocaleString('zh-TW',{hour12:false})})
   btn.textContent='送出登記';btn.disabled=false
   closeLostModal();await loadAndRenderLost(curLostFilter)
