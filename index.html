@@ -1127,7 +1127,7 @@ input[type="password"]::-webkit-credentials-auto-fill-button{visibility:hidden;d
               <button class="btn btn-outline btn-sm" onclick="renderAdminLost()">↺</button>
             </div>
           </div>
-          <div style="overflow-x:auto;"><table class="data-tbl" aria-label="失物管理"><thead><tr><th>物品名稱</th><th>發生車站</th><th>描述</th><th style="text-align:center;">狀態</th><th>時間</th><th>操作</th></tr></thead><tbody id="adminLostTbody"></tbody></table></div>
+          <div style="overflow-x:auto;"><table class="data-tbl" aria-label="失物管理"><thead><tr><th>物品名稱</th><th>發生車站</th><th>描述</th><th>聯絡人</th><th>聯絡電話</th><th style="text-align:center;">狀態</th><th>時間</th><th>操作</th></tr></thead><tbody id="adminLostTbody"></tbody></table></div>
           <div id="adminLostPager"></div>
         </div>
       </div>
@@ -1332,7 +1332,7 @@ const loadStations=async()=>{
 }
 
 // ✅ map()：將 Supabase 失物格式轉為前端格式（日期格式化）
-const sbMapLost=d=>d.map(it=>({id:it.id,name:it.name,station:it.station,description:it.description??'',status:it.status,date:new Date(it.created_at).toLocaleString('zh-TW',{hour12:false})}))
+const sbMapLost=d=>d.map(it=>({id:it.id,name:it.name,station:it.station,description:it.description??'',status:it.status,contact_name:it.contact_name??'',contact_phone:it.contact_phone??'',date:new Date(it.created_at).toLocaleString('zh-TW',{hour12:false})}))
 // 從 Supabase 重新撈取失物資料並更新本地 LOST 陣列
 const sbRefreshLost=async()=>{if(SB_OK){const d=await sbGet('lost_items?select=*&order=created_at.desc');if(d)LOST=sbMapLost(d)}}
 
@@ -1810,7 +1810,7 @@ const renderAdminLost=async()=>{
   await sbRefreshLost()
   const sf=document.getElementById('lostStatusFilter')?.value||'',filtered=LOST.filter(it=>!sf||it.status===sf)
   const {rows,total,pages}=paginate(filtered,adminLostPage),tb=document.getElementById('adminLostTbody');if(!tb)return
-  tb.innerHTML=rows.length?rows.map(it=>`<tr><td><strong>${esc(it.name)}</strong></td><td>${esc(it.station)}</td><td style="font-size:12px;color:var(--ink2);">${esc((it.description||'').slice(0,35))}</td><td style="text-align:center;"><span class="badge ${it.status==='done'?'badge-ok':'badge-warn'}">${it.status==='done'?'已歸還':'招領中'}</span></td><td style="font-size:12px;color:var(--ink3);">${esc(it.date)}</td><td><select aria-label="變更失物狀態" onchange="setLostStatus(${it.id},this.value);this.value=''" style="padding:5px 8px;border:0.5px solid var(--line);background:#fff;font-family:var(--sans);font-size:12px;cursor:pointer;border-radius:8px;"><option value="">── 變更狀態 ──</option><option value="done" ${it.status==='done'?'disabled':''}>✅ 已歸還</option><option value="active" ${it.status==='active'?'disabled':''}>🔓 重新招領</option></select></td></tr>`).join(''):'<tr><td colspan="6" style="padding:22px;text-align:center;color:var(--ink3);">尚無失物紀錄</td></tr>'
+  tb.innerHTML=rows.length?rows.map(it=>`<tr><td><strong>${esc(it.name)}</strong></td><td>${esc(it.station)}</td><td style="font-size:12px;color:var(--ink2);">${esc((it.description||'').slice(0,35))}</td><td style="font-size:12px;">${esc(it.contact_name||'—')}</td><td style="font-size:12px;">${esc(it.contact_phone||'—')}</td><td style="text-align:center;"><span class="badge ${it.status==='done'?'badge-ok':'badge-warn'}">${it.status==='done'?'已歸還':'招領中'}</span></td><td style="font-size:12px;color:var(--ink3);">${esc(it.date)}</td><td><select aria-label="變更失物狀態" onchange="setLostStatus(${it.id},this.value);this.value=''" style="padding:5px 8px;border:0.5px solid var(--line);background:#fff;font-family:var(--sans);font-size:12px;cursor:pointer;border-radius:8px;"><option value="">── 變更狀態 ──</option><option value="done" ${it.status==='done'?'disabled':''}>✅ 已歸還</option><option value="active" ${it.status==='active'?'disabled':''}>🔓 重新招領</option></select></td></tr>`).join(''):'<tr><td colspan="8" style="padding:22px;text-align:center;color:var(--ink3);">尚無失物紀錄</td></tr>'
   renderPager('adminLostPager',total,adminLostPage,pages,p=>{adminLostPage=p;renderAdminLost()})
 }
 const setLostStatus=async(id,status)=>{
