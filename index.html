@@ -921,6 +921,7 @@ input[type="password"]::-webkit-credentials-auto-fill-button{visibility:hidden;d
     </div>
   </div>
 </div>
+</div>
 <!-- Modal：公告 -->
 <div class="modal-ov" id="annModal" role="dialog" aria-modal="true" aria-labelledby="annModalTitle" onclick="if(event.target===this)closeAnnModal()">
   <div class="modal-box">
@@ -1561,6 +1562,16 @@ const renderLostTable=f=>{
 const filterLost=f=>loadAndRenderLost(f)
 
 const openLostModal=()=>{
+  if(curPage!=='lost'){
+    showPage('lost')
+    setTimeout(()=>{
+      document.getElementById('lostForm').reset()
+      document.querySelectorAll('#lostForm .fe').forEach(e=>e.classList.remove('show'))
+      document.querySelectorAll('#lostForm .fc').forEach(e=>e.classList.remove('err'))
+      openModal('lostModal')
+    },300)
+    return
+  }
   document.getElementById('lostForm').reset()
   document.querySelectorAll('#lostForm .fe').forEach(e=>e.classList.remove('show'))
   document.querySelectorAll('#lostForm .fc').forEach(e=>e.classList.remove('err'))
