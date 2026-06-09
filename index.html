@@ -964,6 +964,18 @@ input[type="password"]::-webkit-credentials-auto-fill-button{visibility:hidden;d
           <div class="fe" id="lostStationErr" role="alert">請選擇發生車站。</div>
         </div>
         <div class="fg"><label class="fl" for="lostDesc">物品描述<span class="req">*</span></label><textarea id="lostDesc" class="fc" placeholder="請描述物品外觀、顏色、特徵…" maxlength="500" aria-required="true" style="min-height:75px;"></textarea><div class="fe" id="lostDescErr" role="alert">請輸入物品描述。</div></div>
+        <div class="form-2col">
+           <div class="fg">
+            <label class="fl" for="lostContactName">聯絡人姓名<span class="req">*</span></label>
+            <input type="text" id="lostContactName" class="fc" placeholder="請輸入您的姓名" maxlength="50" aria-required="true">
+            <div class="fe" id="lostContactNameErr" role="alert">請輸入聯絡人姓名。</div>
+            </div>
+            <div class="fg">
+            <label class="fl" for="lostContactPhone">聯絡電話<span class="req">*</span></label>
+            <input type="tel" id="lostContactPhone" class="fc" placeholder="0912345678" maxlength="12" aria-required="true">  
+            <div class="fe" id="lostContactPhoneErr" role="alert">請輸入有效手機號碼。</div>
+            </div>
+         </div>
         <div class="modal-ft" style="padding:0;border:none;"><button type="button" class="btn btn-outline btn-sm" onclick="closeLostModal()">取消</button><button type="submit" class="btn btn-solid" id="lostSubmitBtn">送出登記</button></div>
       </form>
     </div>
